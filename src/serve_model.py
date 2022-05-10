@@ -1,5 +1,4 @@
 import os
-from typing import Optional
 
 import joblib
 from load_data import load_training_data
@@ -10,7 +9,6 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 
 app = FastAPI()
-
 
 @app.get("/")
 def read_root():
@@ -25,6 +23,7 @@ _, _, mlb = load_training_data()
 
 @app.post("/predict/")
 def predict(query: PredictionReq):
+    # TODO log
     return {
         "labels": model.predict(query.heading, clf, emb, mlb)[0]
     }
