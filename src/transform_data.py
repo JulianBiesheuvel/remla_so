@@ -17,9 +17,9 @@ def my_bag_of_words(text, words_to_index, dict_size):
             result_vector[words_to_index[word]] += 1
     return result_vector
 
-def train_embedding(data):
-    tfidf_vectorizer = TfidfVectorizer(min_df=5, max_df=0.9, ngram_range=(1,2), token_pattern='(\S+)') 
-    X_train = tfidf_vectorizer.fit_transform(X_train)
+# def train_embedding(data):
+#     tfidf_vectorizer = TfidfVectorizer(min_df=5, max_df=0.9, ngram_range=(1,2), token_pattern='(\S+)') 
+#     X_train = tfidf_vectorizer.fit_transform(X_train)
 
 
 def tfidf_features(X_train, X_val, X_test):
