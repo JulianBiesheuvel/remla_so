@@ -28,3 +28,10 @@ Results evaluated using several classification metrics:
 - [NLTK](http://www.nltk.org/) — a platform to work with natural language.
 
 Note: this sample project was originally created by @partoftheorigin
+
+
+## Running the server
+
+```
+(cd src ; uvicorn serve_model:app --reload)
+```
