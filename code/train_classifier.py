@@ -1,7 +1,9 @@
 import os
+from typing import List
 
 import numpy as np
-from joblib import dump
+import pandas as pd
+from joblib import dump  # type: ignore
 from load_data import load_test_data, load_training_data, load_validation_data
 from preprocess_data import text_prepare
 from scipy import sparse as sp_sparse
@@ -22,7 +24,7 @@ class BagOfWords:
         self.most_common_tags = None
         self.most_common_words = None
 
-    def fit_transform(self, X_train, X_val, X_test):
+    def fit_transform(self, X_train):
         """Fits to the data and returns the embedded X vector"""
         X_train_mybag = sp_sparse.vstack(
             [
@@ -32,24 +34,8 @@ class BagOfWords:
                 for text in X_train
             ]
         )
-        X_val_mybag = sp_sparse.vstack(
-            [
-                sp_sparse.csr_matrix(
-                    self.transform(text, self.WORDS_TO_INDEX, self.DICT_SIZE)
-                )
-                for text in X_val
-            ]
-        )
-        X_test_mybag = sp_sparse.vstack(
-            [
-                sp_sparse.csr_matrix(
-                    self.transform(text, self.WORDS_TO_INDEX, self.DICT_SIZE)
-                )
-                for text in X_test
-            ]
-        )
 
-        return X_train_mybag, X_val_mybag, X_test_mybag
+        return X_train_mybag
 
     def transform(self, X, dict_size, text, words_to_index):
         result_vector = np.zeros(dict_size)
@@ -94,7 +80,7 @@ def train_classifier(
     penalty="l1",
     C=1,
     embedding=TfidfVectorizer(
-        min_df=5, max_df=0.9, ngram_range=(1, 2), token_pattern="(\S+)"
+        min_df=5, max_df=0.9, ngram_range=(1, 2), token_pattern="(\S+)"  # nosec
     ),
 ):
     """
@@ -114,7 +100,7 @@ def train_classifier(
     return clf, embedding
 
 
-def main():
+def main() -> None:
     # training
 
     # load data
@@ -122,18 +108,18 @@ def main():
     #  - fit embedding & train classifier
     clf, emb = train_classifier(X_train, y_train)
     #  - dump embedding + classifier
-    os.makedirs("output/clf.joblib", exist_ok=True)
-    dump((clf, emb), "output/clf.joblib")
+    # os.makedirs("clf.joblib", exist_ok=True)
+    dump((clf, emb), "clf.joblib")
 
     clf_bow, emb_bow = train_classifier(X_train, y_train, embedding=BagOfWords())
-    os.makedirs("output/clf_bow.joblib", exist_ok=True)
-    dump((clf_bow, emb_bow), "output/clf_bow.joblib")
+    # os.makedirs("output/clf_bow.joblib", exist_ok=True)
+    dump((clf_bow, emb_bow), "clf_bow.joblib")
 
     # TODO BAGofWords
     # TODO see how it performs on validation data
 
 
-def predict(x, clf, emb, mlb):
+def predict(x: str, clf, emb, mlb) -> List[str]:
     """Predict tags using a pretrained model."""
     # preprocess
     preprocessed = text_prepare(x)
@@ -141,10 +127,9 @@ def predict(x, clf, emb, mlb):
     X_emb = emb.transform([preprocessed])
     # call trained model
     labels = clf.predict(X_emb)
-    scores, *_ = clf.decision_function(X_emb)
     # restore labels
     lab, *_ = mlb.inverse_transform(labels)
-    return lab, scores
+    return lab
 
 
 if __name__ == "__main__":
