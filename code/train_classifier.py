@@ -4,8 +4,8 @@ from typing import List
 import numpy as np
 import pandas as pd
 from joblib import dump  # type: ignore
-from load_data import load_test_data, load_training_data, load_validation_data
-from preprocess_data import text_prepare
+from .load_data import load_test_data, load_training_data, load_validation_data
+from .preprocess_data import text_prepare
 from scipy import sparse as sp_sparse
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression, RidgeClassifier
@@ -14,30 +14,24 @@ from sklearn.preprocessing import MultiLabelBinarizer
 
 
 class BagOfWords:
-    def _init_(self, words_counts, X, dict_size=5000):
+    def __init__(self, X_train, y_train, words_counts, dict_size=5000):
+        self.most_common_tags = None
+        self.most_common_words = None
+        self.tags_counts = {}
+        self.words_counts = {}
+        self.get_most_common_words(self, X_train, y_train)
         self.DICT_SIZE = dict_size
         self.INDEX_TO_WORDS = sorted(words_counts, key=words_counts.get, reverse=True)[
             : self.DICT_SIZE
         ]
         self.WORDS_TO_INDEX = {word: i for i, word in enumerate(self.INDEX_TO_WORDS)}
         self.ALL_WORDS = self.WORDS_TO_INDEX.keys()
-        self.most_common_tags = None
-        self.most_common_words = None
 
-    def fit_transform(self, X_train):
+    def fit_transform(self, X_train: List[str]):
         """Fits to the data and returns the embedded X vector"""
-        X_train_mybag = sp_sparse.vstack(
-            [
-                sp_sparse.csr_matrix(
-                    self.transform(text, self.WORDS_TO_INDEX, self.DICT_SIZE)
-                )
-                for text in X_train
-            ]
-        )
+        return sp_sparse.vstack([sp_sparse.csr_matrix(self.transform(text, self.WORDS_TO_INDEX, self.DICT_SIZE))for text in X_train])
 
-        return X_train_mybag
-
-    def transform(self, X, dict_size, text, words_to_index):
+    def transform(self, dict_size, text, words_to_index):
         result_vector = np.zeros(dict_size)
 
         for word in text.split():
@@ -66,12 +60,8 @@ class BagOfWords:
                 else:
                     tags_counts[tag] = 1
 
-        self.most_common_tags = sorted(
-            tags_counts.items(), key=lambda x: x[1], reverse=True
-        )[:3]
-        self.most_common_words = sorted(
-            words_counts.items(), key=lambda x: x[1], reverse=True
-        )[:3]
+        self.most_common_tags = sorted(tags_counts.items(), key=lambda x: x[1], reverse=True)[:3]
+        self.most_common_words = sorted(words_counts.items(), key=lambda x: x[1], reverse=True)[:3]
 
 
 def train_classifier(
@@ -111,7 +101,7 @@ def main() -> None:
     # os.makedirs("clf.joblib", exist_ok=True)
     dump((clf, emb), "clf.joblib")
 
-    clf_bow, emb_bow = train_classifier(X_train, y_train, embedding=BagOfWords())
+    clf_bow, emb_bow = train_classifier(X_train, y_train, embedding=BagOfWords(X_train, y_train))
     # os.makedirs("output/clf_bow.joblib", exist_ok=True)
     dump((clf_bow, emb_bow), "clf_bow.joblib")
 

@@ -41,6 +41,8 @@ Use `poetry run dvc repro` to run `dvc`
 
 Use `poetry run pytest` to run `pytest`
 
+Use `poetry run python -m code.*` to `get_data`,`preprocess_data`, `train_classifier`, `serve_model`
+
 ## Running the server
 
 ```
