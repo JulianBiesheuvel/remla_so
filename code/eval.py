@@ -1,7 +1,11 @@
+"""
+    Runs evaluation on the provided model
+"""
+
 import os
 from sys import argv
 
-from joblib import load
+from joblib import load  # type: ignore
 from load_data import load_training_data, load_validation_data
 from sklearn.metrics import (
     accuracy_score,
@@ -18,19 +22,16 @@ def evaluation_scores(y_val, predicted):
         "accuracy": accuracy_score(y_val, predicted),
         "f1": f1_score(y_val, predicted, average="weighted"),
         "ap": average_precision_score(y_val, predicted, average="macro"),
+        "recall": recall_score(y_val, predicted, labels=None, average="macro"),
         "roc": roc_auc(y_val, predicted, multi_class="ovo"),
     }
 
 
 def evaluate(classifier, embedding):
-    x_val, y_val, mlb = load_validation_data()
-    # predictions = [predict(x, classifier, embedding, mlb) for x in x_val]
-    y_val = mlb.fit_transform(y_val)
-    predictions = predict(x_val[0], classifier, embedding, mlb)
-    # print(predictions)
-    print(y_val[0])
-    print(predictions[1])
-    return evaluation_scores(y_val[0], predictions[1])
+    x_val, y_val, _ = load_validation_data()
+    X_emb = embedding.transform(x_val)
+    labels = classifier.predict(X_emb)
+    return evaluation_scores(y_val, labels)
 
 
 def main():

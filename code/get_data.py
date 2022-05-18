@@ -11,6 +11,6 @@ URL = None
 EXTRACT_DIR = "dataset"
 
 if URL is not None:
-    zip_path, _ = urllib.request.urlretrieve(URL)
+    zip_path, _ = urllib.request.urlretrieve(URL)  # nosec
     with zipfile.ZipFile(zip_path, "r") as f:
         f.extractall(EXTRACT_DIR)

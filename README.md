@@ -37,6 +37,10 @@ Use `poetry install` to install the project dependencies
 
 Use `poetry run mllint` to run mllint
 
+Use `poetry run dvc repro` to run `dvc`
+
+Use `poetry run pytest` to run `pytest`
+
 ## Running the server
 
 ```

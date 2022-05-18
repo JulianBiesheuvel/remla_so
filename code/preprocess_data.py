@@ -1,19 +1,20 @@
+import re
 from functools import reduce
 
 import nltk
 
 nltk.download("stopwords")
-import re
+
 from ast import literal_eval
 
 import numpy as np
 import pandas as pd
-from joblib import dump, load
+from joblib import dump, load  # type: ignore
 from nltk.corpus import stopwords
 from sklearn.preprocessing import MultiLabelBinarizer
 
 
-def read_raw_data(filename):
+def read_raw_data(filename: str) -> pd.DataFrame:
     data = pd.read_csv(filename, sep="\t")
     data["tags"] = data["tags"].apply(literal_eval)
     return data
@@ -24,7 +25,7 @@ BAD_SYMBOLS_RE = re.compile("[^0-9a-z #+_]")
 STOPWORDS = set(stopwords.words("english"))
 
 
-def text_prepare(text):
+def text_prepare(text: str) -> str:
     """
     text: a string
 
@@ -43,7 +44,7 @@ def text_prepare(text):
     return text
 
 
-def main():
+def main() -> None:
     train = read_raw_data("data/train.tsv")
     validation = read_raw_data("data/validation.tsv")
 
