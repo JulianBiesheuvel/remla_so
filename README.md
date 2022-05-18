@@ -29,6 +29,13 @@ Results evaluated using several classification metrics:
 
 Note: this sample project was originally created by @partoftheorigin
 
+## UPDATE `poetry`
+
+Since `mllint` wants us to use `poetry`, stuff became messed up XD
+
+Use `poetry install` to install the project dependencies
+
+Use `poetry run mllint` to run mllint
 
 ## Running the server
 
