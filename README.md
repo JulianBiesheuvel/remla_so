@@ -43,6 +43,9 @@ Use `poetry run pytest` to run `pytest`
 
 Use `poetry run python -m code.*` to `get_data`,`preprocess_data`, `train_classifier`, `serve_model`
 
+To develop, use `poetry shell` to activate the environment.
+Then you can use `mllint`, `pytest`, `python`, `dvc` as you would expect...
+
 ## Running the server
 
 ```

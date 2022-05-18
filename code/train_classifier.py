@@ -64,8 +64,7 @@ class BagOfWords:
         self.most_common_words = sorted(words_counts.items(), key=lambda x: x[1], reverse=True)[:3]
 
 
-def train_classifier(
-    X_train,
+def train_classifier(X_train,
     y_train,
     penalty="l1",
     C=1,
