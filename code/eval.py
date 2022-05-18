@@ -15,9 +15,17 @@ from sklearn.metrics import (
 )
 from sklearn.metrics import roc_auc_score as roc_auc
 from train_classifier import predict
+from typing_extensions import TypedDict
 
+Score = TypedDict('Score', {
+    "accuracy" : float,
+    "f1" : float,
+    "ap" : float,
+    "recall" : float,
+    "roc" : float
+})  
 
-def evaluation_scores(y_val, predicted):
+def evaluation_scores(y_val, predicted) -> Score:
     return {
         "accuracy": accuracy_score(y_val, predicted),
         "f1": f1_score(y_val, predicted, average="weighted"),
@@ -27,14 +35,14 @@ def evaluation_scores(y_val, predicted):
     }
 
 
-def evaluate(classifier, embedding):
+def evaluate(classifier, embedding) -> Score:
     x_val, y_val, _ = load_validation_data()
     X_emb = embedding.transform(x_val)
     labels = classifier.predict(X_emb)
     return evaluation_scores(y_val, labels)
 
 
-def main():
+def main() -> None:
     classifier = argv[1]
     clf, emb = load(
         os.path.join(
