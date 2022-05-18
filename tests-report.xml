@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite errors="3" failures="0" hostname="johanness-air-2.byod.tudelft.net" name="pytest" skipped="0" tests="3" time="1.013" timestamp="2022-05-18T16:21:49.674748"><testcase classname="" file="tests/test_code.py" name="tests.test_code" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/jfk/Documents/github/remla_so/tests/test_code.py&apos;.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+tests/test_code.py:1: in &lt;module&gt;
+    from code import __version__
+E   ImportError: cannot import name &apos;__version__&apos; from &apos;code&apos; (/usr/local/opt/python@3.8/Frameworks/Python.framework/Versions/3.8/lib/python3.8/code.py)</error></testcase><testcase classname="" file="tests/test_preprocess.py" name="tests.test_preprocess" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/jfk/Documents/github/remla_so/tests/test_preprocess.py&apos;.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+tests/test_preprocess.py:1: in &lt;module&gt;
+    from code.preprocess_data import text_prepare
+E   ModuleNotFoundError: No module named &apos;code.preprocess_data&apos;; &apos;code&apos; is not a package</error></testcase><testcase classname="" file="tests/test_transform.py" name="tests.test_transform" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/jfk/Documents/github/remla_so/tests/test_transform.py&apos;.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+tests/test_transform.py:1: in &lt;module&gt;
+    from code.transform_data import my_bag_of_words
+E   ModuleNotFoundError: No module named &apos;code.transform_data&apos;; &apos;code&apos; is not a package</error></testcase></testsuite></testsuites>
