@@ -18,4 +18,5 @@ COPY output/clf.joblib output/clf.joblib
 
 EXPOSE 8080
 
+ENTRYPOINT [ "/bin/bash", "-c" ]
 CMD [ "cd", "src", ";", "uvicorn", "serve_model:app", "--host", "0.0.0.0", "--port", "8080" ]
