@@ -1,5 +1,6 @@
 from functools import reduce
 from typing import List
+from abc import ABC
 
 import numpy as np
 from scipy import sparse as sp_sparse
@@ -24,7 +25,8 @@ Score = TypedDict(
 )
 
 
-class Embedding:
+class Embedding(ABC):
+    # TODO define interface https://docs.python.org/3/library/abc.html
     def fit_transform(self, X):
         pass
 
@@ -34,7 +36,7 @@ class Embedding:
 
 class TFIDF(Embedding):
     def __init__(
-        self, min_df=5, max_df=0.9, ngram_range=(1, 2), token_pattern="(\S+)", **kwargs
+        self, min_df=5, max_df=0.9, ngram_range=(1, 2), token_pattern=r"(\S+)", **kwargs
     ):
         self.emb = TfidfVectorizer(
             min_df=min_df,
@@ -127,7 +129,7 @@ class Model:
 
     def _predict(self, X: List[str]):
         """Preprocess input and predict tags using a pretrained model."""
-        assert self.mlb != None and self.clf != None, "You need to train first"
+        assert self.mlb != None and self.clf != None, "You need to train first"  # nosec
         # preprocess
         preprocessed = preprocess.preprocess(X)
         # embed request

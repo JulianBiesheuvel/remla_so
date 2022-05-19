@@ -4,19 +4,80 @@ stages:
     cmd: poetry run pytest --junitxml=reports/tests.xml --cov=src --cov-report=xml:reports/coverage.xml
     deps:
     - path: src
-      md5: 157f12d0cf757f7f9ac50ea809a07bf5.dir
-      size: 17524331
-      nfiles: 502
+      md5: 9dcc899e3a03983a16eec342b2f2eb2d.dir
+      size: 29264
+      nfiles: 21
     - path: tests
-      md5: ed8d46bc0a520387b35273b63551bbb0.dir
-      size: 7095
+      md5: 4f87cd663c2c36433afa0539cde1f283.dir
+      size: 7131
       nfiles: 10
     outs:
     - path: reports/coverage.xml
-      md5: 9af1fa20edb8be8fdeac2a48307dfff5
-      size: 7662
+      md5: 948b94c05355863349ce579bd91f3292
+      size: 7697
       isexec: true
     - path: reports/tests.xml
-      md5: cf1edb37c394992370f192c43cc619c1
+      md5: c8d507311dbc51ffc163acb0e833dd7a
       size: 859
+      isexec: true
+  preprocess:
+    cmd: poetry run python -m src.preprocess
+    deps:
+    - path: data/raw/train.tsv
+      md5: 2502592a16c44c1e33cb827b2a647406
+      size: 7196138
+    - path: data/raw/validation.tsv
+      md5: 508e1de849c33ba2f38f0b118590a4cd
+      size: 2166270
+    - path: src/conf.py
+      md5: e1a2bf851773f884f49a0975d36b8a9a
+      size: 369
+    - path: src/preprocess.py
+      md5: 5397f3aa6523028e18351a1bcef8814a
+      size: 1852
+    - path: src/utils.py
+      md5: a1061b230e19ec43c09340f2cd4d582b
+      size: 353
+    outs:
+    - path: data/processed/train.joblib
+      md5: 82e6e9e10169bacd368bdd52857aa15d
+      size: 60970675
+      isexec: true
+    - path: data/processed/validation.joblib
+      md5: 7c900d8e22c638d22a8ca18515ffaf34
+      size: 17215763
+      isexec: true
+  train:
+    cmd: poetry run python -m src.train
+    deps:
+    - path: data/processed/train.joblib
+      md5: 82e6e9e10169bacd368bdd52857aa15d
+      size: 60970675
+    - path: data/processed/validation.joblib
+      md5: 7c900d8e22c638d22a8ca18515ffaf34
+      size: 17215763
+    - path: src/conf.py
+      md5: e1a2bf851773f884f49a0975d36b8a9a
+      size: 369
+    - path: src/model.py
+      md5: 428e9bd1d60d1a020d99defe4da875b9
+      size: 5086
+      isexec: true
+    - path: src/preprocess.py
+      md5: 5397f3aa6523028e18351a1bcef8814a
+      size: 1852
+    - path: src/train.py
+      md5: 326fd2f9744e2f8e62c4f5a1d2b7f2b6
+      size: 687
+    - path: src/utils.py
+      md5: a1061b230e19ec43c09340f2cd4d582b
+      size: 353
+    outs:
+    - path: output/models/BagOfWords.joblib
+      md5: 8e956e74710b0dfdb1e4eeb17b965510
+      size: 4118348
+      isexec: true
+    - path: output/models/TFIDF.joblib
+      md5: a0d77cbd761cae92bd6c4ce15c9703f4
+      size: 20062055
       isexec: true
