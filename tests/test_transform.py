@@ -25,4 +25,4 @@ def test_tfidf() -> None:
 
     o2 = emb.transform(data)
 
-    assert (o1 != o2).nnz == 0
+    assert (o1 != o2).nnz == 0  # nosec

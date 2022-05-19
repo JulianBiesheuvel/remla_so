@@ -11,4 +11,4 @@ def test_text_prepare() -> None:
         "free c++ memory vectorint arr",
     ]
     for output, expected in zip(preprocess(examples), answers):
-        assert output == expected, "Wrong answer for the case: '%s'" % expected
+        assert output == expected, "Wrong answer for the case: '%s'" % expected  # nosec
