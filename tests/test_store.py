@@ -18,6 +18,6 @@ def test_store_load() -> None:
 
         loaded = utils.load(path)
 
-        assert loaded == data
+        assert loaded == data  # nosec
     finally:
         os.remove(path)

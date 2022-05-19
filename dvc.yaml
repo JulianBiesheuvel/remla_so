@@ -10,6 +10,7 @@
 
 stages:
   # @Julian/Ratish not sure if tests make sense as part of this pipeline
+  # because it has nothing to do w/ the data versioning part and we may want to keep track of test reports...
   test:
     cmd: poetry run pytest --junitxml=reports/tests.xml --cov=src --cov-report=xml:reports/coverage.xml
     deps:

@@ -30,4 +30,4 @@ def predict(query: Query) -> Dict[str, Any]:
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run("src.serve:app", host="0.0.0.0", port=8000, proxy_headers=True)
+    uvicorn.run("src.serve:app", port=8000)  # nosec
