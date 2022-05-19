@@ -1,0 +1,63 @@
+# TODO
+# - add google drive for storage and model
+#   - 1g_sGxwElkh3qHKSR86hExgqI4TvfILb4 <- this is the url code for the google drive folder, should be added by the following commands
+#   running in the command line: 
+#     - dvc add data(set)
+#     - dvc remote add --default myremote 1g_sGxwElkh3qHKSR86hExgqI4TvfILb4
+#     - dvc push
+#     enter the verification code (Julian)
+# - output for the model should be changed so it supports multiple models
+
+stages:
+  # @Julian/Ratish not sure if tests make sense as part of this pipeline
+  test:
+    cmd: poetry run pytest --junitxml=reports/tests.xml --cov=src --cov-report=xml:reports/coverage.xml
+    deps:
+      - src
+      - tests
+    outs:
+      - reports/tests.xml
+      - reports/coverage.xml
+  # get_data:
+  #   cmd: poetry run python -m src.get_data
+  #   deps:
+  #     - src/conf.py
+  #     - src/utils.py
+  #     - src/get_data.py
+  #   outs:
+  #     - data/raw/train.tsv
+  #     - data/raw/validation.tsv
+  preprocess:
+    cmd: poetry run python -m src.preprocess
+    deps:
+      - data/raw/train.tsv
+      - data/raw/validation.tsv
+      - src/conf.py
+      - src/utils.py
+      - src/preprocess.py
+    outs:
+      - data/processed/train.joblib
+      - data/processed/validation.joblib
+  train:
+    cmd: poetry run python -m src.train
+    deps:
+      - data/processed/train.joblib
+      - data/processed/validation.joblib
+      - src/conf.py
+      - src/utils.py
+      - src/preprocess.py
+      - src/model.py
+      - src/train.py
+    outs:
+      - output/models/BagOfWords.joblib
+      - output/models/TFIDF.joblib
+  # We want probably generate some sort of report here?
+  # @eval metrics: are computed in the train.py main, but as of yet not exported/stored
+  # metrics:
+  #   - summary.json:
+  #       cache: false
+  # @Julian/Ratish not sure if serve should be a target
+  # serve:
+  #   cmd: poetry run python -m code.serve_model.py
+  #   deps:
+  #   - output

@@ -16,7 +16,7 @@ from sklearn.multiclass import OneVsRestClassifier
 from sklearn.preprocessing import MultiLabelBinarizer
 from typing_extensions import TypedDict
 
-from . import conf, utils, preprocess
+from src import conf, preprocess, utils
 
 Score = TypedDict(
     "Score",
@@ -24,7 +24,34 @@ Score = TypedDict(
 )
 
 
-class BagOfWords:
+class Embedding:
+    def fit_transform(self, X):
+        pass
+
+    def transform(self, X):
+        pass
+
+
+class TFIDF(Embedding):
+    def __init__(
+        self, min_df=5, max_df=0.9, ngram_range=(1, 2), token_pattern="(\S+)", **kwargs
+    ):
+        self.emb = TfidfVectorizer(
+            min_df=min_df,
+            max_df=max_df,
+            ngram_range=ngram_range,
+            token_pattern=token_pattern,
+            **kwargs
+        )
+
+    def fit_transform(self, X):
+        return self.emb.fit_transform(X)
+
+    def transform(self, X):
+        return self.emb.transform(X)
+
+
+class BagOfWords(Embedding):
     """Bag of words sentence embedding."""
 
     def __init__(self, size=5000):
@@ -53,7 +80,7 @@ class BagOfWords:
         # return the transformed data
         return self.transform(X)
 
-    def transform_one(self, x: str) -> np.ndarray:
+    def _transform(self, x: str) -> np.ndarray:
         """Transforms a single sentence."""
         result_vector = np.zeros(self.size)
 
@@ -64,9 +91,7 @@ class BagOfWords:
 
     def transform(self, X: List[str]):
         """Return the transformed vector."""
-        return sp_sparse.vstack(
-            [sp_sparse.csr_matrix(self.transform_one(w)) for w in X]
-        )
+        return sp_sparse.vstack([sp_sparse.csr_matrix(self._transform(w)) for w in X])
 
 
 class Model:
@@ -74,9 +99,7 @@ class Model:
 
     def __init__(
         self,
-        embedding=TfidfVectorizer(
-            min_df=5, max_df=0.9, ngram_range=(1, 2), token_pattern="(\S+)"
-        ),
+        embedding: Embedding = TFIDF(),
         penalty="l1",
         C=1,
     ):
@@ -133,24 +156,3 @@ class Model:
     @staticmethod
     def load(model: str):
         return utils.load(conf.MODEL_DIR, model + ".joblib")
-
-
-def main() -> None:
-    # load data
-    train = utils.load(conf.PROCESSED_DATA_DIR, "train.joblib")
-    val = utils.load(conf.PROCESSED_DATA_DIR, "validation.joblib")
-    #  - fit embedding & train classifier
-    m = Model()
-    m.train(*train)
-    utils.store(m, conf.MODEL_DIR, m.name + ".joblib")
-    # TODO store?
-    print(m.eval(*val))
-
-    m2 = Model(embedding=BagOfWords(5000))
-    m2.train(*train)
-    utils.store(m2, conf.MODEL_DIR, m2.name + ".joblib")
-    print(m2.eval(*val))
-
-
-if __name__ == "__main__":
-    main()

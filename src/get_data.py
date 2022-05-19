@@ -5,7 +5,7 @@ Currently the data already is here locally, so this step does nothing.
 import urllib.request
 import zipfile
 
-from . import conf
+from src import conf
 
 # URL = '<URL>'
 URL = None

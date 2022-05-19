@@ -14,7 +14,7 @@ import pandas as pd
 from nltk.corpus import stopwords
 from tqdm import tqdm
 
-from . import conf, utils
+from src import conf, utils
 
 REPLACE_BY_SPACE_RE = re.compile("[/(){}\[\]\|@,;]")
 BAD_SYMBOLS_RE = re.compile("[^0-9a-z #+_]")
