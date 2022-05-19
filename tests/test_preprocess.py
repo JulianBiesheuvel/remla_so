@@ -1,13 +1,7 @@
-from code.preprocess_data import text_prepare
-
-# prepared_questions = []
-# for line in open('data/text_prepare_tests.tsv', encoding='utf-8'):
-#     line = text_prepare(line.strip())
-#     prepared_questions.append(line)
-# text_prepare_results = '\n'.join(prepared_questions)
+from src.preprocess import preprocess
 
 
-def test_text_prepare():
+def test_text_prepare() -> None:
     examples = [
         "SQL Server - any equivalent of Excel's CHOOSE function?",
         "How to free c++ memory vector<int> * arr?",
@@ -16,5 +10,5 @@ def test_text_prepare():
         "sql server equivalent excels choose function",
         "free c++ memory vectorint arr",
     ]
-    for ex, ans in zip(examples, answers):
-        assert text_prepare(ex) == ans, "Wrong answer for the case: '%s'" % ex
+    for output, expected in zip(preprocess(examples), answers):
+        assert output == expected, "Wrong answer for the case: '%s'" % expected
