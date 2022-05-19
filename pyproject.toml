@@ -17,6 +17,7 @@ fastapi = "^0.78.0"
 uvicorn = "^0.17.6"
 nltk = "^3.7"
 tqdm = "^4.64.0"
+gunicorn = "^20.1.0"
 
 
 [tool.poetry.dev-dependencies]
@@ -37,10 +38,13 @@ profile = "black"
 exclude_dirs = ["tests"]
 
 [tool.mllint.testing]
-report = ""
+report = "reports/tests.xml"
 
 [tool.mllint.testing.coverage]
-report = ""
+report = "reports/coverage.xml"
+
+[tool.mllint.testing.coverage.targets]
+line = 50.0
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

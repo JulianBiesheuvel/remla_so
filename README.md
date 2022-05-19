@@ -39,9 +39,9 @@ Use `poetry run mllint` to run mllint
 
 Use `poetry run dvc repro` to run `dvc`
 
-Use `poetry run pytest` to run `pytest`
+Use `poetry run pytest --junitxml=reports/tests.xml --cov=src --cov-report=xml:reports/coverage.xml` to run `pytest`
 
-Use `poetry run python -m code.*` to `get_data`,`preprocess_data`, `train_classifier`, `serve_model`
+Use `poetry run python -m src.*` to `preprocess`,`train`, `service`
 
 To develop, use `poetry shell` to activate the environment.
 Then you can use `mllint`, `pytest`, `python`, `dvc` as you would expect...
@@ -51,3 +51,17 @@ Then you can use `mllint`, `pytest`, `python`, `dvc` as you would expect...
 ```
 (cd src ; uvicorn serve_model:app --reload)
 ```
+
+## Notes
+
+There is a python core module named `code`. Shadowing mostly works as one would expect, but `gunicorn` says no.
+Using `joblib`/`pickle` to save an object defined in the same file will mess with the stored path.
+Again `gunicorn` and `uvicorn` don't play well with this, hence the training is done in a separate file.
+
+So even the tests don't work with this...
+`ImportError: cannot import name '__version__' from 'code' (/usr/lib/python3.8/code.py)`
+FYI this is the module messing with the naming [https://docs.python.org/3.9/library/code.html](https://docs.python.org/3.9/library/code.html)
+
+Lessons learned
+- python naming & shadowing is shady and established packages (`uvicorn`,`gunicorn`)
+- don't use code as your source code directory name if you have to reference it anywhere

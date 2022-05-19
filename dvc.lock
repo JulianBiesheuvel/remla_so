@@ -1,0 +1,22 @@
+schema: '2.0'
+stages:
+  test:
+    cmd: poetry run pytest --junitxml=reports/tests.xml --cov=src --cov-report=xml:reports/coverage.xml
+    deps:
+    - path: src
+      md5: 157f12d0cf757f7f9ac50ea809a07bf5.dir
+      size: 17524331
+      nfiles: 502
+    - path: tests
+      md5: ed8d46bc0a520387b35273b63551bbb0.dir
+      size: 7095
+      nfiles: 10
+    outs:
+    - path: reports/coverage.xml
+      md5: 9af1fa20edb8be8fdeac2a48307dfff5
+      size: 7662
+      isexec: true
+    - path: reports/tests.xml
+      md5: cf1edb37c394992370f192c43cc619c1
+      size: 859
+      isexec: true
