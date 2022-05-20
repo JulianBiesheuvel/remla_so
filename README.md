@@ -49,7 +49,7 @@ Then you can use `mllint`, `pytest`, `python`, `dvc` as you would expect...
 ## Running the server
 
 ```
-(cd src ; uvicorn serve_model:app --reload)
+uvicorn src.service:app --reload
 ```
 
 ## Notes
