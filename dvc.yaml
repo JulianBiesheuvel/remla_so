@@ -9,16 +9,6 @@
 # - output for the model should be changed so it supports multiple models
 
 stages:
-  # @Julian/Ratish not sure if tests make sense as part of this pipeline
-  # because it has nothing to do w/ the data versioning part and we may want to keep track of test reports...
-  test:
-    cmd: poetry run pytest --junitxml=reports/tests.xml --cov=src --cov-report=xml:reports/coverage.xml
-    deps:
-      - src
-      - tests
-    outs:
-      - reports/tests.xml
-      - reports/coverage.xml
   # get_data:
   #   cmd: poetry run python -m src.get_data
   #   deps:
@@ -62,3 +52,14 @@ stages:
   #   cmd: poetry run python -m code.serve_model.py
   #   deps:
   #   - output
+   # @Julian/Ratish not sure if tests make sense as part of this pipeline
+  # because it has nothing to do w/ the data versioning part and we may want to keep track of test reports...
+  test:
+    cmd: poetry run pytest --junitxml=reports/tests.xml --cov=src --cov-report=xml:reports/coverage.xml
+    deps:
+      - src
+      - tests
+    # Specifying outputs causes DVC to complain about the test reports being git version controlled
+    # outs:
+    #   - reports/tests.xml
+    #   - reports/coverage.xml

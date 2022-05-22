@@ -4,22 +4,13 @@ stages:
     cmd: poetry run pytest --junitxml=reports/tests.xml --cov=src --cov-report=xml:reports/coverage.xml
     deps:
     - path: src
-      md5: 9dcc899e3a03983a16eec342b2f2eb2d.dir
-      size: 29264
-      nfiles: 21
+      md5: 701719c82456aae44010dd77249beb8d.dir
+      size: 33521
+      nfiles: 22
     - path: tests
-      md5: 4f87cd663c2c36433afa0539cde1f283.dir
-      size: 7131
-      nfiles: 10
-    outs:
-    - path: reports/coverage.xml
-      md5: 948b94c05355863349ce579bd91f3292
-      size: 7697
-      isexec: true
-    - path: reports/tests.xml
-      md5: c8d507311dbc51ffc163acb0e833dd7a
-      size: 859
-      isexec: true
+      md5: 4f4b51ecb2e30408cbfac9c7287d3824.dir
+      size: 10897
+      nfiles: 13
   preprocess:
     cmd: poetry run python -m src.preprocess
     deps:
@@ -33,11 +24,11 @@ stages:
       md5: e1a2bf851773f884f49a0975d36b8a9a
       size: 369
     - path: src/preprocess.py
-      md5: 5397f3aa6523028e18351a1bcef8814a
-      size: 1852
+      md5: 2e990eb9f1660b8353ed433082c06beb
+      size: 1866
     - path: src/utils.py
-      md5: a1061b230e19ec43c09340f2cd4d582b
-      size: 353
+      md5: b7aaeacc87155b17c83029ab5b2849a3
+      size: 452
     outs:
     - path: data/processed/train.joblib
       md5: 82e6e9e10169bacd368bdd52857aa15d
@@ -60,24 +51,23 @@ stages:
       md5: e1a2bf851773f884f49a0975d36b8a9a
       size: 369
     - path: src/model.py
-      md5: 428e9bd1d60d1a020d99defe4da875b9
-      size: 5086
-      isexec: true
+      md5: 7450dafe86ca1ad0365daddd3c5a58bd
+      size: 6466
     - path: src/preprocess.py
-      md5: 5397f3aa6523028e18351a1bcef8814a
-      size: 1852
+      md5: 2e990eb9f1660b8353ed433082c06beb
+      size: 1866
     - path: src/train.py
-      md5: 326fd2f9744e2f8e62c4f5a1d2b7f2b6
-      size: 687
+      md5: 8fe5e66f223ec852a3bb5a29951d401d
+      size: 913
     - path: src/utils.py
-      md5: a1061b230e19ec43c09340f2cd4d582b
-      size: 353
+      md5: b7aaeacc87155b17c83029ab5b2849a3
+      size: 452
     outs:
     - path: output/models/BagOfWords.joblib
-      md5: 8e956e74710b0dfdb1e4eeb17b965510
+      md5: bb7c3649c52bebe06d8b4a93675cf0ad
       size: 4118348
       isexec: true
     - path: output/models/TFIDF.joblib
-      md5: a0d77cbd761cae92bd6c4ce15c9703f4
+      md5: e4a3d286081f773b357bfd571c7545a9
       size: 20062055
       isexec: true
