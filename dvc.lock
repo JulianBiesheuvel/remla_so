@@ -12,7 +12,7 @@ stages:
       size: 10897
       nfiles: 13
   preprocess:
-    cmd: poetry run python -m src.preprocess
+    cmd: python -m src.preprocess
     deps:
     - path: data/raw/train.tsv
       md5: 2502592a16c44c1e33cb827b2a647406
@@ -39,7 +39,7 @@ stages:
       size: 17215763
       isexec: true
   train:
-    cmd: poetry run python -m src.train
+    cmd: python -m src.train
     deps:
     - path: data/processed/train.joblib
       md5: 82e6e9e10169bacd368bdd52857aa15d
@@ -64,10 +64,10 @@ stages:
       size: 452
     outs:
     - path: output/models/BagOfWords.joblib
-      md5: bb7c3649c52bebe06d8b4a93675cf0ad
+      md5: 22fdaed928a0528cc0c7cc25f1fd6319
       size: 4118348
       isexec: true
     - path: output/models/TFIDF.joblib
-      md5: e4a3d286081f773b357bfd571c7545a9
+      md5: e7fadb4367464688dc93e60a708c1b9b
       size: 20062055
       isexec: true

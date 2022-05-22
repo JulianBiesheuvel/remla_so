@@ -1,28 +1,42 @@
-FROM python:3.9-slim as requirements
+# 1. export poetry requirements and run dvc repro 
+#    to make sure that the model artifacts exist
+FROM python:3.9-slim as build
 
-WORKDIR /tmp
+WORKDIR /build
 
-RUN pip install poetry
+RUN apt update \
+  && apt install -y gcc \
+  && pip install poetry
 
-COPY poetry.lock pyproject.toml /tmp/
+COPY poetry.lock pyproject.toml /build/
 
-RUN poetry export -f requirements.txt --output requirements.txt --without-hashes
+RUN poetry export -f requirements.txt --output requirements.txt --without-hashes \
+  && poetry export -f requirements.txt --dev --output all-requirements.txt --without-hashes \
+  && pip install --no-cache-dir --upgrade -r all-requirements.txt
 
+COPY ./ /build/
+
+# as DVC commits artifact hashes, this should just pull the models and then stop
+# instead of actually training the models from scratch
+RUN pwd && ls -alt && dvc repro --pull train
+
+# 3. install requirements, copy code & models and package api
 FROM python:3.9-slim
 
 WORKDIR /app
 
-COPY --from=requirements /tmp/requirements.txt requirements.txt
+COPY --from=build /build/requirements.txt requirements.txt
 
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 COPY src src
-COPY output/models output/models
+
+COPY --from=build /build/output/models output/models
 
 EXPOSE 8080
 
 # multiple gunicorn workers
 # CMD ["gunicorn", "src.service:app", "-k", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8080"]
 
-# single uvicorn worker 
+# single uvicorn worker (for k8s as process manager)
 CMD ["uvicorn", "src.service:app", "--host", "0.0.0.0", "--port", "8080", "--proxy-headers"]
