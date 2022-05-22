@@ -49,7 +49,7 @@ class TFIDF(Embedding):
 
     def __init__(  # nosec
         self,
-        min_df: float = 5.0,
+        min_df: float = 5,
         max_df: float = 0.9,
         ngram_range: Tuple[int, int] = (1, 2),
         token_pattern: str = r"(\S+)",
