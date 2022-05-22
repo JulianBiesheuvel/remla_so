@@ -1,3 +1,4 @@
+# pylint: disable=all
 from src import __version__
 
 

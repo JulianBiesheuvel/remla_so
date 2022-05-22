@@ -1,6 +1,9 @@
 """
 Provides a REST API for the model.
 """
+
+# pylint: disable=E0611,R0903
+
 from typing import Any, Dict
 
 from fastapi import FastAPI
@@ -23,8 +26,10 @@ m = Model.load("TFIDF")
 @app.post("/predict/")
 def predict(query: Query) -> Dict[str, Any]:
     """Prediction endpoint."""
-    # TODO log
-    return {"labels": m.predict([query.title])[0]}
+
+    labels = m.predict([query.title])[0]
+    # TODO log query + labels ?
+    return {"labels": labels}
 
 
 if __name__ == "__main__":

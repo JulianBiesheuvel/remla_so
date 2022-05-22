@@ -4,6 +4,7 @@ import tempfile
 from src import utils
 
 
+# pylint: disable=all
 def test_store_load() -> None:
     _, path = tempfile.mkstemp()
     data = {
