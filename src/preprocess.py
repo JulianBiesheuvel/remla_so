@@ -1,13 +1,15 @@
+"""
+Data preprocessing for the model.
+"""
+
+import os
 import re
-from functools import reduce
+from ast import literal_eval
+from typing import List, Tuple
 
 import nltk
 
 nltk.download("stopwords")
-
-import os
-from ast import literal_eval
-from typing import List, Tuple
 
 import numpy as np
 import pandas as pd
@@ -16,7 +18,7 @@ from tqdm import tqdm
 
 from src import conf, utils
 
-REPLACE_BY_SPACE_RE = re.compile("[/(){}\[\]\|@,;]")
+REPLACE_BY_SPACE_RE = re.compile(r"[/(){}\[\]\|@,;]")
 BAD_SYMBOLS_RE = re.compile("[^0-9a-z #+_]")
 STOPWORDS = set(stopwords.words("english"))
 
