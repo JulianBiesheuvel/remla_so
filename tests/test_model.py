@@ -1,3 +1,4 @@
+# pylint: disable=all
 from src.model import TFIDF, BagOfWords
 
 
@@ -8,7 +9,7 @@ def test_my_bag_of_words() -> None:
     examples = ["hi how are you"]
     answers = [[1, 1, 0, 1]]
     for ex, expected in zip(examples, answers):
-        assert (emb._transform(ex) == expected).all(), (
+        assert (emb._transform(ex) == expected).all(), (  # nosec
             "Wrong answer for the case: '%s'" % expected
         )
 

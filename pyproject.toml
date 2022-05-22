@@ -46,6 +46,9 @@ report = "reports/coverage.xml"
 [tool.mllint.testing.coverage.targets]
 line = 50.0
 
+[tool.pylint.'MESSAGES CONTROL']
+disable = ["C0103", "C0413", "C0301"]
+
 [tool.mypy]
 ignore_missing_imports = "True"
 

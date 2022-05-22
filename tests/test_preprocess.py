@@ -1,3 +1,4 @@
+# pylint: disable=all
 from src.preprocess import preprocess
 
 
