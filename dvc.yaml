@@ -19,7 +19,8 @@ stages:
   #     - data/raw/train.tsv
   #     - data/raw/validation.tsv
   preprocess:
-    cmd: poetry run python -m src.preprocess
+    # cmd: poetry run python -m src.preprocess
+    cmd: python -m src.preprocess
     deps:
       - data/raw/train.tsv
       - data/raw/validation.tsv
@@ -30,7 +31,8 @@ stages:
       - data/processed/train.joblib
       - data/processed/validation.joblib
   train:
-    cmd: poetry run python -m src.train
+    # cmd: poetry run python -m src.train
+    cmd: python -m src.train
     deps:
       - data/processed/train.joblib
       - data/processed/validation.joblib
@@ -55,7 +57,8 @@ stages:
    # @Julian/Ratish not sure if tests make sense as part of this pipeline
   # because it has nothing to do w/ the data versioning part and we may want to keep track of test reports...
   test:
-    cmd: poetry run pytest --junitxml=reports/tests.xml --cov=src --cov-report=xml:reports/coverage.xml
+    # cmd: poetry run pytest --junitxml=reports/tests.xml --cov=src --cov-report=xml:reports/coverage.xml
+    cmd: pytest --junitxml=reports/tests.xml --cov=src --cov-report=xml:reports/coverage.xml
     deps:
       - src
       - tests
