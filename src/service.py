@@ -8,10 +8,17 @@ from typing import Any, Dict
 
 from fastapi import FastAPI
 from pydantic import BaseModel
+from starlette.responses import RedirectResponse
 
 from src.model import Model
 
 app = FastAPI()
+
+
+@app.get("/")
+def index():
+    """Redirect to API docs."""
+    return RedirectResponse(url="/docs")
 
 
 class Query(BaseModel):
