@@ -1,0 +1,8 @@
+# for the current docker build (which DVC repros during the build)
+# we need to also copy the .git directory in the build step...
+.*
+!.git
+!.dvc
+!.dvcignore
+!.pylintrc
+__pycache__
