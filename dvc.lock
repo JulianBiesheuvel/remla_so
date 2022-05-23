@@ -4,8 +4,8 @@ stages:
     cmd: pytest --junitxml=reports/tests.xml --cov=src --cov-report=xml:reports/coverage.xml
     deps:
     - path: src
-      md5: bdff9ce1bb25ac621bc0d302a293c05f.dir
-      size: 37734
+      md5: 8e74d610876f3b29304176985946bace.dir
+      size: 37906
       nfiles: 24
     - path: tests
       md5: 4f4b51ecb2e30408cbfac9c7287d3824.dir
@@ -21,10 +21,10 @@ stages:
       md5: 346613cb38adbdbe606ff312423378f8
       size: 419
     - path: src/preprocess.py
-      md5: bb88927210b0941122f766e13d1ffc20
-      size: 2032
+      md5: 39783b3358f6504b48a21d37f5151f3b
+      size: 2031
     - path: src/utils.py
-      md5: ef92df0c1891be9bb23fd81943aa1017
+      md5: 7a96686674bfddc2391b8aba08921d1a
       size: 756
     outs:
     - path: data/processed/preprocessed.csv
@@ -47,21 +47,21 @@ stages:
       md5: 7450dafe86ca1ad0365daddd3c5a58bd
       size: 6466
     - path: src/preprocess.py
-      md5: bb88927210b0941122f766e13d1ffc20
-      size: 2032
+      md5: 39783b3358f6504b48a21d37f5151f3b
+      size: 2031
     - path: src/train.py
       md5: 8fe5e66f223ec852a3bb5a29951d401d
       size: 913
     - path: src/utils.py
-      md5: ef92df0c1891be9bb23fd81943aa1017
+      md5: 7a96686674bfddc2391b8aba08921d1a
       size: 756
     outs:
     - path: output/models/BagOfWords.joblib
-      md5: 8fa6e93cf19427bcfbadb4081badb394
+      md5: 38720c3f828b6b10f9559a5b31310bcf
       size: 4118350
       isexec: true
     - path: output/models/TFIDF.joblib
-      md5: 6cc4d921eae4c55c725825824907a3db
+      md5: 5cb8bebdcf3431c33a0988b0e0cf8c3e
       size: 19568044
       isexec: true
   validate:
@@ -74,11 +74,11 @@ stages:
       md5: 346613cb38adbdbe606ff312423378f8
       size: 419
     - path: src/utils.py
-      md5: ef92df0c1891be9bb23fd81943aa1017
+      md5: 7a96686674bfddc2391b8aba08921d1a
       size: 756
     - path: src/validate.py
-      md5: dafdab658b4810faf66fb5280f7af275
-      size: 1430
+      md5: ab301838c0eae01a5dd6488b0b09b8cd
+      size: 1579
     outs:
     - path: data/processed/train.joblib
       md5: 8e1c1164b1e1701da11900551cb48aff

@@ -11,3 +11,4 @@ PROCESSED_DATA_DIR = os.path.join(DATA_DIR, "processed")
 
 OUTPUT_DIR = os.path.join(ROOT_DIR, "output")
 MODEL_DIR = os.path.join(OUTPUT_DIR, "models")
+DATA_STATS_DIR = os.path.join(OUTPUT_DIR, "data")
