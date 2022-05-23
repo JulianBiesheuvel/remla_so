@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: model-api
+  name: model-api-deployment
   labels:
     app: model-api
 spec:
@@ -17,8 +17,8 @@ spec:
       containers:
         - name: model-api
           # image: ghcr.io/julianbiesheuvel/remla_so-service:latest
-          # image: proksch/showenv #service
-          image: service
+          image: proksch/showenv #service
+          # image: service
           ports:
           - containerPort: 8080
 ---
@@ -31,7 +31,7 @@ spec:
   selector:
     app: model-api
   ports:
-    - port: 8080
+    - port: 1234
       targetPort: 8080
 ---
 apiVersion: networking.k8s.io/v1
@@ -43,7 +43,7 @@ spec:
     service:
       name: model-svc
       port:
-        number: 8080
+        number: 1234
 ---
 apiVersion: v1
 kind: ConfigMap

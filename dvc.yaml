@@ -19,22 +19,27 @@ stages:
   #     - data/raw/train.tsv
   #     - data/raw/validation.tsv
   preprocess:
-    # cmd: poetry run python -m src.preprocess
     cmd: python -m src.preprocess
     deps:
-      # - data/raw/train.tsv
-      # - data/raw/validation.tsv
       - data/raw/raw.tsv
       - src/conf.py
       - src/utils.py
       - src/preprocess.py
     outs:
-      # - data/processed/train.joblib
-      # - data/processed/validation.joblib
       - data/processed/preprocessed.csv
+  gen_schema:
+    cmd: python -m src.gen_schema
+    deps:
+      - data/processed/preprocessed.csv
+      - src/conf.py
+      - src/utils.py
+      - src/gen_schema.py
+    outs:
+      - output/data/schema.txt
   validate:
     cmd: python -m src.validate
     deps:
+      - output/data/schema.txt
       - data/processed/preprocessed.csv
       - src/conf.py
       - src/utils.py
@@ -43,7 +48,6 @@ stages:
       - data/processed/train.joblib
       - data/processed/validation.joblib
   train:
-    # cmd: poetry run python -m src.train
     cmd: python -m src.train
     deps:
       - data/processed/train.joblib
@@ -56,6 +60,11 @@ stages:
     outs:
       - output/models/BagOfWords.joblib
       - output/models/TFIDF.joblib
+    metrics:
+      - output/BagOfWords.json:
+          cache: false
+      - output/TFIDF.json:
+          cache: false
       # https://dvc.org/doc/command-reference/metrics
       # maybe add output/<Emb>.json as metrics output
   # We want probably generate some sort of report here?
@@ -77,8 +86,8 @@ stages:
       - src
       - tests
     # Specifying outputs causes DVC to complain about the test reports being git version controlled
-    # outs:
-    #   - reports/tests.xml:
-    #       cache: false
-    #   - reports/coverage.xml:
-    #       cache: false
+    outs:
+      - reports/tests.xml:
+          cache: false
+      - reports/coverage.xml:
+          cache: false

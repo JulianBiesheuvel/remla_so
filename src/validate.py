@@ -2,7 +2,7 @@
 
 import os
 from ast import literal_eval
-from typing import AnyStr, List, Tuple
+from typing import Any, AnyStr, List, Tuple
 
 import pandas as pd
 import tensorflow_data_validation as tfdv
@@ -11,16 +11,8 @@ from sklearn.model_selection import train_test_split
 from src import conf, utils
 
 
-def gen_schema(
-    stats: tfdv.statistics_pb2.DatasetFeatureStatisticsList,
-) -> tfdv.schema_pb2.Schema:
-    schema = tfdv.infer_schema(statistics=stats)
-    tfdv.write_schema_text(schema, os.path.join(conf.DATA_STATS_DIR, "schema.txt"))  # type: ignore
-    return schema
-
-
 def gen_stats(
-    schema: tfdv.tfdv.schema_pb2.Schema, dataframe: pd.DataFrame, name: AnyStr
+    schema: Any, dataframe: pd.DataFrame, name: AnyStr
 ) -> Tuple[List[str], List[List[str]]]:
     """
     Generate tfdv stats for a dataframe and return the contents of the dataframe.

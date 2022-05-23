@@ -16,7 +16,7 @@ def main() -> None:
     dataframe = pd.read_csv(os.path.join(conf.PROCESSED_DATA_DIR, "preprocessed.csv"))
     stats = tfdv.generate_statistics_from_dataframe(dataframe)
     schema = tfdv.infer_schema(statistics=stats)
-    tfdv.write_schema_text(schema, os.path.join(conf.DATA_STATS_DIR, "schema.txt"))  # type: ignore
+    tfdv.write_schema_text(schema, os.path.join(conf.DATA_STATS_DIR, "schema.txt"))
 
 
 if __name__ == "__main__":
