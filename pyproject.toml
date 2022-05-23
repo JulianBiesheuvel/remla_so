@@ -29,7 +29,8 @@ black = "^22.3.0"
 isort = "^5.10.1"
 pytest-cov = "^3.0.0"
 bandit = "^1.7.4"
-dvc = "^2.10.2"
+dvc = {extras = ["gdrive"], version = "^2.10.2"}
+tensorflow-data-validation = "^1.8.0"
 
 [tool.isort]
 profile = "black"

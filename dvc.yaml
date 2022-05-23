@@ -18,6 +18,14 @@ stages:
   #   outs:
   #     - data/raw/train.tsv
   #     - data/raw/validation.tsv
+  # validate:
+  #   cmd: python -m src.validate
+  #   deps:
+  #     - data/raw/train.tsv
+  #     - data/raw/validation.tsv
+  #     - src/conf.py
+  #     - src/utils.py
+  #     - src/preprocess.py
   preprocess:
     # cmd: poetry run python -m src.preprocess
     cmd: python -m src.preprocess
@@ -44,6 +52,8 @@ stages:
     outs:
       - output/models/BagOfWords.joblib
       - output/models/TFIDF.joblib
+      # https://dvc.org/doc/command-reference/metrics
+      # maybe add output/<Emb>.json as metrics output
   # We want probably generate some sort of report here?
   # @eval metrics: are computed in the train.py main, but as of yet not exported/stored
   # metrics:
@@ -64,5 +74,7 @@ stages:
       - tests
     # Specifying outputs causes DVC to complain about the test reports being git version controlled
     # outs:
-    #   - reports/tests.xml
-    #   - reports/coverage.xml
+    #   - reports/tests.xml:
+    #       cache: false
+    #   - reports/coverage.xml:
+    #       cache: false
