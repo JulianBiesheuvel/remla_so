@@ -1,12 +1,12 @@
 schema: '2.0'
 stages:
   test:
-    cmd: poetry run pytest --junitxml=reports/tests.xml --cov=src --cov-report=xml:reports/coverage.xml
+    cmd: pytest --junitxml=reports/tests.xml --cov=src --cov-report=xml:reports/coverage.xml
     deps:
     - path: src
-      md5: 701719c82456aae44010dd77249beb8d.dir
-      size: 33521
-      nfiles: 22
+      md5: d79f98865e578b56ea255943e1cd7c0c.dir
+      size: 34415
+      nfiles: 24
     - path: tests
       md5: 4f4b51ecb2e30408cbfac9c7287d3824.dir
       size: 10897
