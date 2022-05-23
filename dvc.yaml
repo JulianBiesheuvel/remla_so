@@ -18,23 +18,27 @@ stages:
   #   outs:
   #     - data/raw/train.tsv
   #     - data/raw/validation.tsv
-  # validate:
-  #   cmd: python -m src.validate
-  #   deps:
-  #     - data/raw/train.tsv
-  #     - data/raw/validation.tsv
-  #     - src/conf.py
-  #     - src/utils.py
-  #     - src/preprocess.py
   preprocess:
     # cmd: poetry run python -m src.preprocess
     cmd: python -m src.preprocess
     deps:
-      - data/raw/train.tsv
-      - data/raw/validation.tsv
+      # - data/raw/train.tsv
+      # - data/raw/validation.tsv
+      - data/raw/raw.tsv
       - src/conf.py
       - src/utils.py
       - src/preprocess.py
+    outs:
+      # - data/processed/train.joblib
+      # - data/processed/validation.joblib
+      - data/processed/preprocessed.csv
+  validate:
+    cmd: python -m src.validate
+    deps:
+      - data/processed/preprocessed.csv
+      - src/conf.py
+      - src/utils.py
+      - src/validate.py
     outs:
       - data/processed/train.joblib
       - data/processed/validation.joblib

@@ -5,7 +5,7 @@ FROM python:3.9-slim as build
 WORKDIR /build
 
 RUN apt update \
-  && apt install -y gcc \
+  && apt install -y gcc g++ \
   && pip install poetry
 
 COPY poetry.lock pyproject.toml /build/
@@ -18,7 +18,7 @@ COPY ./ /build/
 
 # as DVC commits artifact hashes, this should just pull the models and then stop
 # instead of actually training the models from scratch
-RUN pwd && ls -alt && dvc repro --pull train
+RUN dvc repro --pull train
 
 # 3. install requirements, copy code & models and package api
 FROM python:3.9-slim
