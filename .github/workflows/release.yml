@@ -24,7 +24,10 @@ jobs:
           echo "version_patch=$PATCH" >> $GITHUB_ENV
       
       - name: Login to registry
-        run: echo "${{ github.token }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        run: echo $GHCR_PAT | docker login ghcr.io -u JFKakaJFK --password-stdin
+        # run: echo "${{ github.token }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        env:
+          GHCR_PAT: ${{ secrets.GHCR_PAT }}
 
       - name: Pull trained models from DVC
         run: |
