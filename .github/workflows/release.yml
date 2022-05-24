@@ -28,13 +28,15 @@ jobs:
       - name: Build and push microservice image
         run: |
           IMG=`echo ghcr.io/${{ github.repository }}-service | tr '[:upper:]' '[:lower:]'`
-          docker build \
+          docker build --build-arg GDRIVE_CREDENTIALS_DATA \
             -t ${IMG}:latest \
             -t ${IMG}:${{ env.version_major }}-latest \
             -t ${IMG}:${{ env.version_major }}.${{ env.version_minor }}-latest \
             -t ${IMG}:${{ env.version }} \
             .
           docker push --all-tags $IMG
+        env:
+          GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
       
       - name: Create Release
         id: create_release
