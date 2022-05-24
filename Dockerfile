@@ -11,14 +11,14 @@ RUN apt update \
 COPY poetry.lock pyproject.toml /build/
 
 RUN poetry export -f requirements.txt --output requirements.txt --without-hashes \
-  && poetry export -f requirements.txt --dev --output all-requirements.txt --without-hashes \
-  && pip install --no-cache-dir --upgrade -r all-requirements.txt
+  && pip install --no-cache-dir --upgrade 'dvc[gdrive]'
+#  && poetry export -f requirements.txt --dev --output all-requirements.txt --without-hashes \
+#  && pip install --no-cache-dir --upgrade -r all-requirements.txt
 
 COPY ./ /build/
 
-# as DVC commits artifact hashes, this should just pull the models and then stop
-# instead of actually training the models from scratch
-RUN dvc repro --pull train
+# we need the DVC versioned model files
+RUN dvc pull train
 
 # 3. install requirements, copy code & models and package api
 FROM python:3.9-slim
