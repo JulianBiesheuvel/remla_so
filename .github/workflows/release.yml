@@ -28,6 +28,7 @@ jobs:
 
       - name: Pull trained models from DVC
         run: |
+          dvc remote modify myremote gdrive_use_service_account true
           ls -alt output/models
           dvc pull train
           ls -alt output/models
