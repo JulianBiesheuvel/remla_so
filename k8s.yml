@@ -34,6 +34,21 @@ spec:
     - port: 1234
       targetPort: 8080
 ---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: mymonitor
+  labels:
+    release: promstack
+spec:
+  selector:
+    matchLabels:
+      app: model-svc
+  endpoints:
+  - targetPort: 8080
+    path: "/metrics"
+    interval: 1s
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:

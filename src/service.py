@@ -8,6 +8,7 @@ from typing import Any, Dict
 
 from fastapi import FastAPI
 from pydantic import BaseModel
+from fastapi.responses import PlainTextResponse
 from starlette.responses import RedirectResponse
 
 from src.model import Model
@@ -37,6 +38,13 @@ def predict(query: Query) -> Dict[str, Any]:
     labels = m.predict([query.title])[0]
     # TODO log query + labels ?
     return {"labels": labels}
+
+@app.get("/metrics", response_class=PlainTextResponse)
+def metrics():
+    help_text = "# HELP my-random A random number\n"
+    type_text = "# TYPE my_random gauge\n"
+    metric_text = "my_random"
+    return help_text + type_text + metric_text
 
 
 if __name__ == "__main__":
