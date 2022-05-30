@@ -1,20 +1,19 @@
-
 import scrapy
 
 class QuotesSpider(scrapy.Spider):
     name = "quotes"
-
-    def start_requests(self):
-        urls = [
-            'https://quotes.toscrape.com/page/1/',
-            'https://quotes.toscrape.com/page/2/',
-        ]
-        for url in urls:
-            yield scrapy.Request(url=url, callback=self.parse)
+    start_urls = [
+        'https://stackoverflow.com/questions?tab=newest&pagesize=50',
+        'https://stackoverflow.com/questions?tab=newest&page=2',
+    ]
 
     def parse(self, response):
-        page = response.url.split("/")[-2]
-        filename = f'quotes-{page}.html'
-        with open(filename, 'wb') as f:
-            f.write(response.body)
-        self.log(f'Saved file {filename}')
+        for question in response.css('#questions .s-post-summary'):
+            item = {
+                "title": question.css('a.s-link::text').get(),
+                "tags": question.css('.tags .post-tag::text').getall()
+            }
+            yield item
+
+        next_page = response.css('.s-pagination.float-left a.s-pagination--item::attr(href)').getall()[-1]
+        yield response.follow(next_page+"&pagesize=50", self.parse)
