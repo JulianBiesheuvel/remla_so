@@ -60,6 +60,22 @@ To be able to pull the model api image, k8s needs a GitHub Personal Access Token
 kubectl create secret docker-registry ghcr-pat --docker-server=ghcr.io --docker-username=<GITHUB_USER> --docker-password=<GITHUB_PAT>
 ```
 
+Note: this stores your secret in your history, see https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ for other ways of providing the secret to k8s.
+
+Then use `kubectl apply -f k8s.yml` to deploy.
+
+
+### Minikube Notes
+
+Somehow I needed these things to be able to access everything nicely...
+
+- Enable Kubernetes addon for Docker desktop
+
+```bash
+minikube addons enable ingress
+minikube tunnel
+```
+
 ## Notes
 
 There is a python core module named `code`. Shadowing mostly works as one would expect, but `gunicorn` says no.

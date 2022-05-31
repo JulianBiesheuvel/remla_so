@@ -16,11 +16,12 @@ spec:
     spec:
       containers:
         - name: model-api
-          # image: ghcr.io/julianbiesheuvel/remla_so-service:latest
-          image: proksch/showenv #service
-          # image: service
+          image: ghcr.io/julianbiesheuvel/remla_so-service:latest
+          # image: proksch/showenv #service
           ports:
           - containerPort: 8080
+      imagePullSecrets:
+        - name: ghcr-pat
 ---
 apiVersion: v1
 kind: Service
