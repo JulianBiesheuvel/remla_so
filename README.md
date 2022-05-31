@@ -52,6 +52,14 @@ Then you can use `mllint`, `pytest`, `python`, `dvc` as you would expect...
 uvicorn src.service:app --reload
 ```
 
+## K8s
+
+To be able to pull the model api image, k8s needs a GitHub Personal Access Token with read package rights. To tell k8s about this token you can use
+
+```bash
+kubectl create secret docker-registry ghcr-pat --docker-server=ghcr.io --docker-username=<GITHUB_USER> --docker-password=<GITHUB_PAT>
+```
+
 ## Notes
 
 There is a python core module named `code`. Shadowing mostly works as one would expect, but `gunicorn` says no.
