@@ -64,6 +64,10 @@ Note: this stores your secret in your history, see https://kubernetes.io/docs/ta
 
 Then use `kubectl apply -f k8s.yml` to deploy.
 
+### Helm
+
+We use `prometheus-community/kube-prometheus-stack` with the name `promstack`.
+
 
 ### Minikube Notes
 
