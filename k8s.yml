@@ -5,7 +5,7 @@ metadata:
   labels:
     app: model-api
 spec:
-  replicas: 3
+  replicas: 3 # TODO autoscaling?
   selector:
     matchLabels:
       app: model-api
@@ -15,11 +15,10 @@ spec:
         app: model-api
     spec:
       containers:
-        - name: model-api
-          image: ghcr.io/julianbiesheuvel/remla_so-service:latest
-          # image: proksch/showenv #service
-          ports:
-          - containerPort: 8080
+      - name: model-api
+        image: ghcr.io/julianbiesheuvel/remla_so-service:latest
+        ports:
+        - containerPort: 8080
       imagePullSecrets:
         - name: ghcr-pat
 ---
@@ -27,46 +26,43 @@ apiVersion: v1
 kind: Service
 metadata:
   name: model-svc
+  labels:
+    app: model-svc
 spec:
-  type: NodePort # TODO comment & use ClusterIP
   selector:
     app: model-api
   ports:
-    - port: 1234
+    - port: 8080
       targetPort: 8080
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: mymonitor
+  name: model-monitor
   labels:
+    # release matches helm install name for the kube-prometheus-stack
     release: promstack
 spec:
   selector:
     matchLabels:
       app: model-svc
   endpoints:
-  - targetPort: 1234
+  - targetPort: 8080
     path: "/metrics"
     interval: 1s
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress
+  name: model-ingress
 spec:
   defaultBackend:
     service:
       name: model-svc
       port:
-        number: 1234
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: conf
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: secrets
+        number: 8080
+
+# kubectl create secret docker-registry ghcr-pat --docker-server=ghcr.io --docker-username=jfkakajfk --docker-password=***
+
+# connect to pod/svc/... (type)
+# kubectl port-forward <type>/<name> from:to
