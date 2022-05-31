@@ -5,6 +5,7 @@ Provides a REST API for the model.
 # pylint: disable=E0611,R0903
 
 from typing import Any, Dict
+import random
 
 from fastapi import FastAPI
 from pydantic import BaseModel
@@ -41,10 +42,11 @@ def predict(query: Query) -> Dict[str, Any]:
 
 @app.get("/metrics", response_class=PlainTextResponse)
 def metrics():
-    help_text = "# HELP my-random A random number\n"
-    type_text = "# TYPE my_random gauge\n"
-    metric_text = "my_random"
-    return help_text + type_text + metric_text
+    return """\
+# HELP my_random A random number
+# TYPE my_random gauge
+my_random {my_random}
+""".format(my_random = random.random())
 
 
 if __name__ == "__main__":
