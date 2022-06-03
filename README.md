@@ -52,7 +52,7 @@ Then you can use `mllint`, `pytest`, `python`, `dvc` as you would expect...
 uvicorn src.service:app --reload
 ```
 
-## K8s
+## K8s & Helm
 
 To be able to pull the model api image, k8s needs a GitHub Personal Access Token with read package rights. To tell k8s about this token you can use
 
@@ -62,12 +62,14 @@ kubectl create secret docker-registry ghcr-pat --docker-server=ghcr.io --docker-
 
 Note: this stores your secret in your history, see https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ for other ways of providing the secret to k8s.
 
-Then use `kubectl apply -f k8s.yml` to deploy.
+To deploy use
 
-### Helm
-
-We use `prometheus-community/kube-prometheus-stack` with the name `promstack`.
-
+```bash
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm install promstack prometheus-community/kube-prometheus-stack
+kubectl apply -f k8s.yml
+```
 
 ### Minikube Notes
 
