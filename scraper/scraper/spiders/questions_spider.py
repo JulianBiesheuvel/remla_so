@@ -1,8 +1,8 @@
 import scrapy
 
 
-class QuotesSpider(scrapy.Spider):
-    name = "quotes"
+class QuestionsSpider(scrapy.Spider):
+    name = "questions"
     start_urls = [
         "https://stackoverflow.com/questions?tab=newest&pagesize=50",
         "https://stackoverflow.com/questions?tab=newest&page=2",
@@ -12,7 +12,7 @@ class QuotesSpider(scrapy.Spider):
         for question in response.css("#questions .s-post-summary"):
             item = {
                 "title": question.css("a.s-link::text").get(),
-                "tags": question.css(".tags .post-tag::text").getall(),
+                "tags": str(question.css(".tags .post-tag::text").getall()),
             }
             yield item
 

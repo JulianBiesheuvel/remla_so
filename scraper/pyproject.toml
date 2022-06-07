@@ -1,0 +1,59 @@
+[tool.poetry]
+name = "code"
+version = "0.1.0"
+description = ""
+authors = ["Johannes Koch <j.koch@student.tudelft.nl>",
+"Julian Bieshuevel <jpbiesheuvel@student.tudelft.nl>",
+"Andrew Huang <a.s.huang@student.tudelft.nl>",
+"Ratish Thakoersingh <r.k.thakoersingh@student.tudelft.nl>"]
+
+[tool.poetry.dependencies]
+python = ">= 3.8,<3.10"
+numpy = "^1.22.3"
+sklearn = "^0.0"
+pandas = "^1.4.2"
+pydantic = "^1.9.0"
+fastapi = "^0.78.0"
+uvicorn = "^0.17.6"
+nltk = "^3.7"
+tqdm = "^4.64.0"
+gunicorn = "^20.1.0"
+Scrapy = "^2.6.1"
+
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+mllint = "^0.12.1"
+pylint = "^2.13.9"
+mypy = "^0.950"
+black = "^22.3.0"
+isort = "^5.10.1"
+pytest-cov = "^3.0.0"
+bandit = "^1.7.4"
+dvc = {extras = ["gdrive"], version = "^2.10.2"}
+tensorflow-data-validation = "^1.8.0"
+
+[tool.isort]
+profile = "black"
+
+[tool.bandit]
+exclude_dirs = ["tests"]
+
+[tool.mllint.testing]
+report = "reports/tests.xml"
+
+[tool.mllint.testing.coverage]
+report = "reports/coverage.xml"
+
+[tool.mllint.testing.coverage.targets]
+line = 50.0
+
+[tool.pylint.'MESSAGES CONTROL']
+disable = ["C0103", "C0413", "C0301"]
+
+[tool.mypy]
+ignore_missing_imports = "True"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
