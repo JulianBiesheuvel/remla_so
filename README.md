@@ -66,8 +66,10 @@ To deploy use
 
 ```bash
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
 helm install promstack prometheus-community/kube-prometheus-stack
+helm install postgres -f postgres-values.yml bitnami/postgresql
 kubectl apply -f k8s.yml
 ```
 

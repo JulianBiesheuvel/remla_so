@@ -1,0 +1,61 @@
+# This file contains overrides for the bitnami pg helm chart
+# see https://artifacthub.io/packages/helm/bitnami/postgresql
+
+global:
+  postgresql:
+    auth:
+      username: "remla"
+      database: "remla"
+      # password is made available via k8s secret
+    service:
+      ports:
+        postgresql: 5432
+
+primary:
+  initdb:
+    ## @param primary.initdb.scripts Dictionary of initdb scripts
+    ## Specify dictionary of scripts to be run at first boot
+    ## e.g:
+    ## scripts:
+    ##   my_init_script.sh: |
+    ##      #!/bin/sh
+    ##      echo "Do something."
+    ##
+    scripts: {}
+    ## @param primary.initdb.scriptsSecret Secret with scripts to be run at first boot (in case it contains sensitive information)
+    ## NOTE: This can work along `primary.initdb.scripts` or `primary.initdb.scriptsConfigMap`
+    ##
+    scriptsSecret: ""
+    ## @param primary.initdb.user Specify the PostgreSQL username to execute the initdb scripts
+    ##
+    user: ""
+    ## @param primary.initdb.password Specify the PostgreSQL password to execute the initdb scripts
+    ##
+    password: ""
+  persistence:
+    enabled: true
+    size: 8Gi
+metrics:
+  enabled: true
+  ## Define additional custom metrics
+  ## https://github.com/wrouesnel/postgres_exporter#adding-new-metrics-via-a-config-file
+  ## customMetrics:
+  ##   pg_database:
+  ##     query: "SELECT d.datname AS name, CASE WHEN pg_catalog.has_database_privilege(d.datname, 'CONNECT') THEN pg_catalog.pg_database_size(d.datname) ELSE 0 END AS size_bytes FROM pg_catalog.pg_database d where datname not in ('template0', 'template1', 'postgres')"
+  ##     metrics:
+  ##       - name:
+  ##           usage: "LABEL"
+  ##           description: "Name of the database"
+  ##       - size_bytes:
+  ##           usage: "GAUGE"
+  ##           description: "Size of the database in bytes"
+  ##
+  customMetrics: {}
+  containerPorts:
+    metrics: 9187
+  serviceMonitor:
+    enabled: true
+    interval: 1m
+    labels:
+      release: promstack
+  
