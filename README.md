@@ -1,4 +1,93 @@
-# Multilabel classification on Stack Overflow tags
+# REMLA 2022 Project
+
+[![Release on version tag](https://github.com/JulianBiesheuvel/remla_so/actions/workflows/release.yml/badge.svg)](https://github.com/JulianBiesheuvel/remla_so/actions/workflows/release.yml)
+
+---
+
+# TODO clean up
+# TODO clean up
+# TODO clean up
+# TODO clean up
+
+---
+
+# Overview
+
+#TODO
+
+```mermaid
+graph LR
+  subgraph dvc
+    d1.1(preprocess)-- train.joblib<br/>validation.joblib<br/>schema -->d2(train) --> d3[(models)]
+    d1.2(test)
+    d0(start)--> d1.1 & d1.2(test)
+
+    d3 & d1.2 --> d4(end)
+  end
+  
+  subgraph k8s
+    subgraph model-svc
+      api(model-api)
+    end
+
+    subgraph pg
+    end
+  end
+```
+
+# Structure
+
+Ideally we would use [path dependencies](https://python-poetry.org/docs/dependency-specification/#path-dependencies) and have a structure like the following
+
+```
+ ├─ .github/workflows/
+ |  ├─ release.yml
+ |  ├─ train.yml # TODO
+ ├─ lib/
+ |  ├─ preprocessing + model + utils
+ |  ├─ README.md
+ ├─ pipeline/
+ |  ├─ .dvc
+ |  ├─ data/
+ |  |  ├─ raw
+ |  |  ├─ processed
+ |  ├─ output/
+ |  |  ├─ ...
+ |  ├─ reports/
+ |  ├─ tests/
+ |  ├─ <lib package>
+ |  ├─ stages.py # python -m stages <stage>
+ |  ├─ pyproject.toml
+ |  ├─ dvc.yml
+ |  ├─ README.md
+ ├─ api/
+ |  ├─ <lib package>
+ |  ├─ app.py
+ |  ├─ pyproject.toml
+ |  ├─ Dockerfile
+ |  ├─ README.md
+ ├─ scraper/
+ |  ├─ <lib package>
+ |  ├─ scraper/
+ |  |  ├─ settings.py
+ |  |  ├─ questions.py # spider
+ |  ├─ scrapy.cfg
+ |  ├─ scrape.sh
+ |  ├─ pyproject.toml
+ |  ├─ Dockerfile
+ |  ├─ README.md
+ ├─ monitor/
+ |  ├─ <lib package>
+ |  ├─ src/
+ |  ├─ pyproject.toml
+ |  ├─ Dockerfile
+ |  ├─ README.md
+ ├─ k8s.yml
+ ├─ postgres-values.yml
+ ├─ README.md
+```
+
+Multilabel classification on Stack Overflow tags
 Predict tags for posts from StackOverflow with multilabel classification approach.
 
 ## Dataset
@@ -27,7 +116,7 @@ Results evaluated using several classification metrics:
 - [scikit-learn](http://scikit-learn.org/stable/index.html) — a tool for data mining and data analysis.
 - [NLTK](http://www.nltk.org/) — a platform to work with natural language.
 
-Note: this sample project was originally created by @partoftheorigin
+
 
 ## UPDATE `poetry`
 
@@ -65,23 +154,33 @@ Note: this stores your secret in your history, see https://kubernetes.io/docs/ta
 To deploy use
 
 ```bash
+# set up minikube
+minikube start
+minikube addons enable ingress
+
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
 helm install promstack prometheus-community/kube-prometheus-stack
+kubectl apply -f k8s.yml # defines secrets pg depends on
 helm install postgres -f postgres-values.yml bitnami/postgresql
-kubectl apply -f k8s.yml
+
+# to make the ingress accessible
+minikube tunnel
 ```
 
-### Minikube Notes
+Then access cluster resources using 
+```
+# connect to pod/svc/... (type)
+# kubectl port-forward <type>/<name> from:to
+kubectl port-forward svc/promstack-prometheus 9090
+```
 
-Somehow I needed these things to be able to access everything nicely...
+## Using the db
 
-- Enable Kubernetes addon for Docker desktop
-
-```bash
-minikube addons enable ingress
-minikube tunnel
+```
+pip install --upgrade pip           # upgrade pip to at least 20.3
+pip install psycopg[binary]
 ```
 
 ## Notes
@@ -97,3 +196,5 @@ FYI this is the module messing with the naming [https://docs.python.org/3.9/libr
 Lessons learned
 - python naming & shadowing is shady and established packages (`uvicorn`,`gunicorn`)
 - don't use code as your source code directory name if you have to reference it anywhere
+
+Note: the model used in the project was originally created by @partoftheorigin

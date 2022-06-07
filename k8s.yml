@@ -5,7 +5,7 @@ metadata:
   labels:
     app: model-api
 spec:
-  replicas: 3 # TODO autoscaling?
+  replicas: 3
   selector:
     matchLabels:
       app: model-api
@@ -17,6 +17,7 @@ spec:
       containers:
       - name: model-api
         image: ghcr.io/julianbiesheuvel/remla_so-service:latest
+        #imagePullPolicy: Always
         ports:
         - containerPort: 8080
       imagePullSecrets:
@@ -61,8 +62,187 @@ spec:
       name: model-svc
       port:
         number: 8080
-
-# kubectl create secret docker-registry ghcr-pat --docker-server=ghcr.io --docker-username=jfkakajfk --docker-password=***
-
-# connect to pod/svc/... (type)
-# kubectl port-forward <type>/<name> from:to
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scraper
+  labels:
+    app: scraper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: scraper
+  template:
+    metadata:
+      labels:
+        app: scraper
+    spec:
+      containers:
+        - name: scraper
+          image: ghcr.io/julianbiesheuvel/remla_so-scraper:latest
+          # imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          env:
+            - name: PGHOST
+              valueFrom:
+                configMapKeyRef:
+                  name: pg-config
+                  key: pg-host
+            - name: PGPORT
+              valueFrom:
+                configMapKeyRef:
+                  name: pg-config
+                  key: pg-port
+            - name: PGDATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: pg-config
+                  key: pg-db
+            - name: PGUSER
+              valueFrom:
+                configMapKeyRef:
+                  name: pg-config
+                  key: pg-user
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pg-secrets
+                  key: password
+      imagePullSecrets:
+        - name: ghcr-pat
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: scraper-svc
+  labels:
+    app: scraper-svc
+spec:
+  selector:
+    app: scraper
+  ports:
+    - port: 9000
+      targetPort: 9000
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: scraper-monitor
+  labels:
+    # release matches helm install name for the kube-prometheus-stack
+    release: promstack
+spec:
+  selector:
+    matchLabels:
+      app: scraper-svc
+  endpoints:
+  - targetPort: 9000
+    path: "/metrics"
+    interval: 30s
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: drift-monitor
+  labels:
+    app: drift-monitor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: drift-monitor
+  template:
+    metadata:
+      labels:
+        app: drift-monitor
+    spec:
+      containers:
+        - name: drift-monitor
+          image: proksch/showenv
+          # TODO image: ghcr.io/julianbiesheuvel/remla_so-monitor:latest
+          # imagePullPolicy: Always
+          ports:
+            - containerPort: 4444
+          env:
+            - name: PGHOST
+              valueFrom:
+                configMapKeyRef:
+                  name: pg-config
+                  key: pg-host
+            - name: PGPORT
+              valueFrom:
+                configMapKeyRef:
+                  name: pg-config
+                  key: pg-port
+            - name: PGDATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: pg-config
+                  key: pg-db
+            - name: PGUSER
+              valueFrom:
+                configMapKeyRef:
+                  name: pg-config
+                  key: pg-user
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pg-secrets
+                  key: password
+      imagePullSecrets:
+        - name: ghcr-pat
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: drift-monitor-svc
+  labels:
+    app: drift-monitor-svc
+spec:
+  selector:
+    app: drift-monitor
+  ports:
+    - port: 4444
+      targetPort: 4444
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: drift-monitor-monitor
+  labels:
+    # release matches helm install name for the kube-prometheus-stack
+    release: promstack
+spec:
+  selector:
+    matchLabels:
+      app: drift-monitor-svc
+  endpoints:
+  - targetPort: 4444
+    path: "/metrics"
+    interval: 30s
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pg-config
+data:
+  # k8s magic # postgres-postgresql.default.svc.cluster.local
+  pg-host: postgres-postgresql
+  pg-port: "5432"
+  pg-user: remla
+  pg-db: remla
+---
+# Note that bitnami/postgresql would generate its own secret every time,
+# but a) to be explicit and b) to avoid the PVC and kubectl values to be out of sync
+# the database secrets are set here
+apiVersion: v1
+kind: Secret
+metadata:
+  name: pg-secrets
+data:
+  password: aHVudGVyMg==
+  postgres-password: YWRtaW4=
+  replication-password: MTIzNDU2Nzg=

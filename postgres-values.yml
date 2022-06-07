@@ -6,32 +6,21 @@ global:
     auth:
       username: "remla"
       database: "remla"
-      # password is made available via k8s secret
+      existingSecret: pg-secrets # use the secrets from k8s.yml
     service:
       ports:
         postgresql: 5432
-
 primary:
   initdb:
-    ## @param primary.initdb.scripts Dictionary of initdb scripts
-    ## Specify dictionary of scripts to be run at first boot
-    ## e.g:
-    ## scripts:
-    ##   my_init_script.sh: |
-    ##      #!/bin/sh
-    ##      echo "Do something."
-    ##
-    scripts: {}
-    ## @param primary.initdb.scriptsSecret Secret with scripts to be run at first boot (in case it contains sensitive information)
-    ## NOTE: This can work along `primary.initdb.scripts` or `primary.initdb.scriptsConfigMap`
-    ##
-    scriptsSecret: ""
-    ## @param primary.initdb.user Specify the PostgreSQL username to execute the initdb scripts
-    ##
-    user: ""
-    ## @param primary.initdb.password Specify the PostgreSQL password to execute the initdb scripts
-    ##
-    password: ""
+    scripts:
+      schema.sql: | # this feels weird^^
+        create table questions
+        (
+            id         int                     not null primary key,
+            title      text                    not null,
+            tags       text                    not null,
+            created_at timestamp default now() not null
+        );
   persistence:
     enabled: true
     size: 8Gi
