@@ -84,7 +84,7 @@ spec:
           image: ghcr.io/julianbiesheuvel/remla_so-scraper:latest
           # imagePullPolicy: Always
           ports:
-            - containerPort: 8000
+            - containerPort: 9000
           env:
             - name: PGHOST
               valueFrom:
