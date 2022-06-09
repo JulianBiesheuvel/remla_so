@@ -1,5 +1,5 @@
 # pylint: disable=all
-from src import __version__
+from lib import __version__
 
 
 def test_version() -> None:

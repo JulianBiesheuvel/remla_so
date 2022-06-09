@@ -42,6 +42,7 @@ prometheus-client = "^0.14.1"
 psycopg = {extras = ["binary"], version = "^3.0.14"}
 
 [tool.poetry.group.drift-monitor.dependencies]
+APScheduler = "^3.9.1"
 fastapi = "^0.78.0"
 scikit-multiflow = "^0.5.3"
 psycopg = {extras = ["binary"], version = "^3.0.14"}
@@ -75,6 +76,11 @@ report = "reports/coverage.xml"
 
 [tool.mllint.testing.coverage.targets]
 line = 50.0
+
+[tool.mllint.testing.targets.ratio]
+tests = 1
+other = 9
+
 
 [tool.pylint.'MESSAGES CONTROL']
 disable = ["C0103", "C0413", "C0301"]

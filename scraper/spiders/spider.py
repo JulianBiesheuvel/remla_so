@@ -2,9 +2,13 @@
 Your friendly neighbourhood spider.
 """
 
+# pylint: skip-file
+# mypy: ignore-errors
+
 import scrapy
 
 from scraper.items import Question
+
 
 class QuestionsSpider(scrapy.Spider):
     """A spider scraping StackOverflow question titles and tags."""
@@ -19,9 +23,9 @@ class QuestionsSpider(scrapy.Spider):
 
         for question in response.css("#questions .s-post-summary"):
             yield Question(
-                id = int(question.attrib["data-post-id"]),
-                title = question.css("a.s-link::text").get(),
-                tags = str(question.css(".tags .post-tag::text").getall())
+                id=int(question.attrib["data-post-id"]),
+                title=question.css("a.s-link::text").get(),
+                tags=str(question.css(".tags .post-tag::text").getall()),
             )
 
         next_page = response.css(

@@ -1,29 +1,29 @@
 schema: '2.0'
 stages:
   test:
-    cmd: pytest --junitxml=reports/tests.xml --cov=src --cov-report=xml:reports/coverage.xml
+    cmd: pytest --junitxml=reports/tests.xml --cov=lib --cov-report=xml:reports/coverage.xml
     deps:
-    - path: output/models/BagOfWords.joblib
-      md5: 567274b83ebf50b6b1a1a53a017c4669
-      size: 4118323
-    - path: output/models/TFIDF.joblib
-      md5: d40146582d41220c6fb8222ad3fc0aac
-      size: 18352884
-    - path: src
-      md5: 097272958e36181bf9967170006f9c08.dir
+    - path: lib
+      md5: 32d6a24d6173d4b5a5be31e6f4416de9.dir
       size: 35993
       nfiles: 21
+    - path: output/models/BagOfWords.joblib
+      md5: 2106f2cf39593cbb0eabad95d303fb3a
+      size: 4118323
+    - path: output/models/TFIDF.joblib
+      md5: b930a9971c0159203d132d6d2d118b10
+      size: 18352884
     - path: tests
-      md5: f18557a2291fb75d0a821e6c0112fd98.dir
+      md5: 85f2c4c9c772fde5ed11d309261c266a.dir
       size: 16462
       nfiles: 19
     outs:
     - path: reports/coverage.xml
-      md5: bd6ee99d82ce23a389700067bee9ee6e
+      md5: ef44744ce492c96fa68b836d4feb906e
       size: 5720
       isexec: true
     - path: reports/tests.xml
-      md5: 8092f3a01fdb3ac8cd62913f8075717a
+      md5: df9471b1bafdac27e63d399d83259986
       size: 1018
       isexec: true
   preprocess:
@@ -32,13 +32,13 @@ stages:
     - path: data/raw/raw.tsv
       md5: a1d55666d530e7ad6150aafd18b2f909
       size: 9362397
-    - path: pipeline/preprocess.py
-      md5: 8d70a441d762c7a09ea4f7900a817cb2
-      size: 1144
-    - path: src
-      md5: 097272958e36181bf9967170006f9c08.dir
-      size: 35993
+    - path: lib
+      md5: e0a8915b324767820470c15801d3bc1a.dir
+      size: 36034
       nfiles: 21
+    - path: pipeline/preprocess.py
+      md5: 8ee4bdaabd04cf828e5e207a20e9eb86
+      size: 1191
     outs:
     - path: data/processed/preprocessed.csv
       md5: e6946e2b5b09cf26c6c460ab6df69e99
@@ -53,28 +53,28 @@ stages:
     - path: data/processed/validation.joblib
       md5: e5e41b0ba045e7a46849342732057ac7
       size: 3432637
-    - path: pipeline/train.py
-      md5: 8fe5e66f223ec852a3bb5a29951d401d
-      size: 913
-    - path: src
-      md5: 097272958e36181bf9967170006f9c08.dir
+    - path: lib
+      md5: 32d6a24d6173d4b5a5be31e6f4416de9.dir
       size: 35993
       nfiles: 21
+    - path: pipeline/train.py
+      md5: af06d1154e92fb08fdb81f9957116ee8
+      size: 913
     outs:
     - path: output/BagOfWords.json
-      md5: 2890c4a5109635a54cec8e46aa6a9b05
+      md5: 2686b6998fe69a7fb731abd703576f83
       size: 143
       isexec: true
     - path: output/TFIDF.json
-      md5: 986ea2b6e53c60395d83807a8d288fe0
-      size: 143
+      md5: 106583eb9dd041dd6d138bbd8bf243ce
+      size: 141
       isexec: true
     - path: output/models/BagOfWords.joblib
-      md5: 567274b83ebf50b6b1a1a53a017c4669
+      md5: 2106f2cf39593cbb0eabad95d303fb3a
       size: 4118323
       isexec: true
     - path: output/models/TFIDF.joblib
-      md5: d40146582d41220c6fb8222ad3fc0aac
+      md5: b930a9971c0159203d132d6d2d118b10
       size: 18352884
       isexec: true
   validate:
@@ -83,16 +83,16 @@ stages:
     - path: data/processed/preprocessed.csv
       md5: e6946e2b5b09cf26c6c460ab6df69e99
       size: 8118533
+    - path: lib
+      md5: e0a8915b324767820470c15801d3bc1a.dir
+      size: 36034
+      nfiles: 21
     - path: output/data/schema.txt
       md5: 221546fe759d153800839f0fba62f571
       size: 283
     - path: pipeline/validate.py
-      md5: 053610dbc0c41209131e0fc96e4be9e6
-      size: 1899
-    - path: src
-      md5: 097272958e36181bf9967170006f9c08.dir
-      size: 35993
-      nfiles: 21
+      md5: 842dadd9ea5c6bb89a43615283f672ed
+      size: 1900
     outs:
     - path: data/processed/train.joblib
       md5: 553eb98537b18869bdd9f5378890b6d9
@@ -108,13 +108,13 @@ stages:
     - path: data/processed/preprocessed.csv
       md5: e6946e2b5b09cf26c6c460ab6df69e99
       size: 8118533
-    - path: pipeline/gen_schema.py
-      md5: 10562de402b4eacf4df428fbd76a7a00
-      size: 566
-    - path: src
-      md5: 097272958e36181bf9967170006f9c08.dir
-      size: 35993
+    - path: lib
+      md5: e0a8915b324767820470c15801d3bc1a.dir
+      size: 36034
       nfiles: 21
+    - path: pipeline/gen_schema.py
+      md5: 86b25080ad4e5d60995858236c1cb192
+      size: 566
     outs:
     - path: output/data/schema.txt
       md5: 221546fe759d153800839f0fba62f571

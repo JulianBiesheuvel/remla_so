@@ -2,94 +2,78 @@
 Provides a REST API for the model.
 """
 
+from ast import literal_eval
+
+import psycopg
+from apscheduler.schedulers.background import BackgroundScheduler
+
 # pylint: disable=E0611,R0903
-
-from time import time
-from typing import List
-
 from fastapi import FastAPI
 from fastapi.responses import PlainTextResponse
-from starlette.responses import RedirectResponse
 from skmultiflow.drift_detection.adwin import ADWIN
-import psycopg
+from starlette.responses import RedirectResponse
 
-from src.model import Model
+from drift_monitor.drift_monitor import DriftMonitor
+from lib.model import Model
+
 
 def get_new_data(batch_size: int = 20000):
     """Retrieves new testing data"""
-    X,y = [], []
-    with psycopg.connect() as conn:
+    X, y = [], []
+    with psycopg.connect() as conn:  # pylint: ignore
         with conn.cursor() as cur:
-            for title, tags in cur.execute("select title, tags from questions order by created_at desc limit %s;", (batch_size, )):
+            for title, tags in cur.execute(
+                "select title, tags from questions order by created_at desc limit %s;",  # nosec
+                (batch_size,),
+            ):
                 X.append(title)
-                y.append(eval(tags))
+                y.append(literal_eval(tags))
         conn.close()
-    return (X,y)
+    return (X, y)
+
 
 m = Model.load("TFIDF")
+
+
 def calculate_scores():
+    """Gets data and calculates the model scores"""
     X, y = get_new_data()
     return m.eval(X, y)
 
-class DriftMonitor:
-    """Class for monitoring drift over time."""
-    def __init__(self,
-        metrics=List[str],
-        detector = ADWIN,
-        calculate_scores = calculate_scores
-    ) -> None:
-        self.metrics = metrics
-        self.detectors = { m: detector() for m in metrics }
-        self.last_scores = {}
-        self.calculate_score = calculate_scores
-    
-    def tick(self):
-        """Detects prediction drift"""
-        scores = self.calculate_scores()
-        for metric in self.metrics:
-            self.detectors[metric].add_element(scores[metric])
-        self.last_scores = scores
 
-    def prometheus_exporter(self):
-        """Prometheus integration"""
-        ts = int(time() * 1000)  # unix timestamp in [ms]
+def load_model_metrics():
+    """Loads the initial model metrics"""
+    import json  # pylint: ignore
+    import os  # pylint: ignore
 
-        return "\n".join("""\
-# HELP Last batch {k} score
-# TYPE drift_monitor_{k} gauge
-drift_monitor_{k} {v} {ts}  
+    with open(os.path.join("output", "TFIDF.json"), encoding="utf8") as f:
+        return json.load(f)
 
-# HELP {k} drift detected
-# TYPE drift_monitor_drift_detected_{k} gauge
-drift_monitor_drift_detected_{k} {drift} {ts}
-
-# HELP 1 if {k} is in the drift warning zone
-# TYPE drift_monitor_drift_warning_{k} gauge
-drift_monitor_drift_warning_{k} {warn} {ts}
-
-""".format(
-    ts=ts,
-    k=k,
-    v=v,
-    drift=1 if self.detectors[k].detected_change else 0,
-    warn=1 if self.detectors[k].detected_warning_zone else 0,
-) for k,v in self.last_scores)
 
 drift_monitor = DriftMonitor(
-    metrics = ["accuracy", "f1"],
+    calculate_scores,
+    metrics=load_model_metrics(),
     detector=ADWIN,
-    calculate_scores=calculate_scores
 )
 
 app = FastAPI()
+
+
+@app.on_event("startup")
+def startup():
+    """Starts the monitor tick as background job"""
+    scheduler = BackgroundScheduler({"apscheduler.timezone": "UTC"})
+    scheduler.add_job(drift_monitor.tick, "interval", seconds=5)  # minutes=30)
+    scheduler.start()
+
 
 @app.get("/")
 def index() -> RedirectResponse:
     """Redirect to API docs."""
     return RedirectResponse(url="/docs")
 
+
 @app.get("/metrics", response_class=PlainTextResponse)
 def get_metrics() -> str:
     """Returns Prometheus text-based metrics."""
-    drift_monitor.tick()
-    return drift_monitor.prometheus_exporter()
+    return drift_monitor.prometheus_metrics()

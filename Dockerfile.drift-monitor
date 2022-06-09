@@ -8,9 +8,9 @@ COPY requirements-drift-monitor.txt .
 RUN pip install --no-cache-dir --upgrade -r requirements.txt \
   && pip install --no-cache-dir --upgrade -r requirements-drift-monitor.txt
 
-COPY src src
+COPY lib lib
 COPY drift_monitor drift_monitor
-COPY output/models output/models
+COPY output output
 
 EXPOSE 8080
 

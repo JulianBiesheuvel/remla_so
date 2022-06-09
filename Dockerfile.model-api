@@ -6,7 +6,7 @@ COPY requirements-model-api.txt requirements.txt
 
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
-COPY src src
+COPY lib lib
 COPY model_api model_api
 COPY output/models output/models
 

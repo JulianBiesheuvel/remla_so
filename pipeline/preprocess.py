@@ -1,9 +1,15 @@
+"""
+Preprocessing step of DVC pipeline
+"""
+
 import os
 from ast import literal_eval
+
 import pandas as pd
 
-from src.preprocess import preprocess
-from src import conf, utils
+from lib import conf, utils
+from lib.preprocess import preprocess
+
 
 def preprocess_raw(filename: str) -> pd.DataFrame:
     """Preprocesses a .tsv file and returns the pandas DataFrame."""

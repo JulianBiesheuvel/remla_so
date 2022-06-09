@@ -8,7 +8,8 @@ import pandas as pd
 import tensorflow_data_validation as tfdv
 from sklearn.model_selection import train_test_split
 
-from src import conf, utils
+from lib import conf, utils
+
 
 def gen_stats(
     schema: Any, dataframe: pd.DataFrame, name: AnyStr

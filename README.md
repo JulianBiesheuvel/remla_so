@@ -78,7 +78,7 @@ Ideally we would use [path dependencies](https://python-poetry.org/docs/dependen
  |  ├─ README.md
  ├─ monitor/
  |  ├─ <lib package>
- |  ├─ src/
+ |  ├─ lib/
  |  ├─ pyproject.toml
  |  ├─ Dockerfile
  |  ├─ README.md
@@ -128,9 +128,9 @@ Use `poetry run mllint` to run mllint
 
 Use `poetry run dvc repro` to run `dvc`
 
-Use `poetry run pytest --junitxml=reports/tests.xml --cov=src --cov-report=xml:reports/coverage.xml` to run `pytest`
+Use `poetry run pytest --junitxml=reports/tests.xml --cov=lib --cov-report=xml:reports/coverage.xml` to run `pytest`
 
-Use `poetry run python -m src.*` to `preprocess`,`train`, `service`
+Use `poetry run python -m lib.*` to `preprocess`,`train`, `service`
 
 To develop, use `poetry shell` to activate the environment.
 Then you can use `mllint`, `pytest`, `python`, `dvc` as you would expect...
@@ -138,7 +138,7 @@ Then you can use `mllint`, `pytest`, `python`, `dvc` as you would expect...
 ## Running the server
 
 ```
-uvicorn src.service:app --reload
+uvicorn lib.service:app --reload
 ```
 
 ## K8s & Helm

@@ -6,7 +6,7 @@ import os
 import pandas as pd
 import tensorflow_data_validation as tfdv
 
-from src import conf
+from lib import conf
 
 
 def main() -> None:

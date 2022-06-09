@@ -9,7 +9,7 @@ import os
 
 from tqdm import tqdm
 
-from src import conf, model, utils
+from lib import conf, model, utils
 
 
 def main() -> None:

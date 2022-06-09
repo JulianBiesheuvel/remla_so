@@ -15,7 +15,7 @@ from fastapi.responses import JSONResponse, PlainTextResponse
 from pydantic import BaseModel, Extra, conlist
 from starlette.responses import RedirectResponse
 
-from src.model import Model
+from lib.model import Model
 
 app = FastAPI()
 

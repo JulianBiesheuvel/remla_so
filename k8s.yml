@@ -223,6 +223,86 @@ spec:
     path: "/metrics"
     interval: 30s
 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: so-agent
+  labels:
+    app: so-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: so-agent
+  template:
+    metadata:
+      labels:
+        app: so-agent
+    spec:
+      containers:
+        - name: so-agent
+          image: ghcr.io/julianbiesheuvel/remla_so-so-agent:latest
+          # imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PGHOST
+              valueFrom:
+                configMapKeyRef:
+                  name: pg-config
+                  key: pg-host
+            - name: PGPORT
+              valueFrom:
+                configMapKeyRef:
+                  name: pg-config
+                  key: pg-port
+            - name: PGDATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: pg-config
+                  key: pg-db
+            - name: PGUSER
+              valueFrom:
+                configMapKeyRef:
+                  name: pg-config
+                  key: pg-user
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pg-secrets
+                  key: password
+      imagePullSecrets:
+        - name: ghcr-pat
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: so-agent-svc
+  labels:
+    app: so-agent-svc
+spec:
+  selector:
+    app: so-agent
+  ports:
+    - port: 8080
+      targetPort: 7000
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: so-agent-monitor
+  labels:
+    # release matches helm install name for the kube-prometheus-stack
+    release: promstack
+spec:
+  selector:
+    matchLabels:
+      app: so-agent-svc
+  endpoints:
+  - targetPort: 7000
+    path: "/metrics"
+    interval: 30s
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:

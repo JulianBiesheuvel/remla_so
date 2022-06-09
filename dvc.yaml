@@ -3,7 +3,7 @@ stages:
     cmd: python -m pipeline.preprocess
     deps:
       - data/raw/raw.tsv
-      - src
+      - lib
       - pipeline/preprocess.py
     outs:
       - data/processed/preprocessed.csv
@@ -11,7 +11,7 @@ stages:
     cmd: python -m pipeline.gen_schema
     deps:
       - data/processed/preprocessed.csv
-      - src
+      - lib
       - pipeline/gen_schema.py
     outs:
       - output/data/schema.txt
@@ -20,7 +20,7 @@ stages:
     deps:
       - output/data/schema.txt
       - data/processed/preprocessed.csv
-      - src
+      - lib
       - pipeline/validate.py
     outs:
       - data/processed/train.joblib
@@ -30,7 +30,7 @@ stages:
     deps:
       - data/processed/train.joblib
       - data/processed/validation.joblib
-      - src
+      - lib
       - pipeline/train.py
     outs:
       - output/models/BagOfWords.joblib
@@ -41,11 +41,11 @@ stages:
       - output/TFIDF.json:
           cache: false
   test:
-    cmd: pytest --junitxml=reports/tests.xml --cov=src --cov-report=xml:reports/coverage.xml
+    cmd: pytest --junitxml=reports/tests.xml --cov=lib --cov-report=xml:reports/coverage.xml
     deps:
       - output/models/BagOfWords.joblib
       - output/models/TFIDF.joblib
-      - src
+      - lib
       - tests
     outs:
       - reports/tests.xml:
