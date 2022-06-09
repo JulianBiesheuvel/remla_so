@@ -21,8 +21,9 @@ jobs:
           python-version: '3.9'
       - uses: snok/install-poetry@v1
         with:
-          version: '1.2.0b1'
+          version: '1.2.0b2'
       - run: | # more convenient to do it here instead of having 3 multistage docker builds...
+          poetry --version
           poetry config --list
           poetry self show plugins
       - run: |
