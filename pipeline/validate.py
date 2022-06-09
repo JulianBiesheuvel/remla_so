@@ -10,7 +10,6 @@ from sklearn.model_selection import train_test_split
 
 from src import conf, utils
 
-
 def gen_stats(
     schema: Any, dataframe: pd.DataFrame, name: AnyStr
 ) -> Tuple[List[str], List[List[str]]]:

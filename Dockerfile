@@ -27,6 +27,7 @@ WORKDIR /app
 
 COPY --from=build /build/requirements.txt requirements.txt
 
+RUN pip install --upgrade setuptools
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 COPY src src

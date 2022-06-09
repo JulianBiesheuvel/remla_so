@@ -1,0 +1,15 @@
+FROM python:3.9-slim
+
+WORKDIR /app
+
+COPY requirements-model-api.txt requirements.txt
+
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
+
+COPY src src
+COPY model_api model_api
+COPY output/models output/models
+
+EXPOSE 8080
+
+CMD ["uvicorn", "model_api.main:app", "--host", "0.0.0.0", "--port", "8080", "--proxy-headers"]

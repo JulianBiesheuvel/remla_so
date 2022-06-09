@@ -1,62 +1,37 @@
-# TODO
-# - add google drive for storage and model
-#   - 1g_sGxwElkh3qHKSR86hExgqI4TvfILb4 <- this is the url code for the google drive folder, should be added by the following commands
-#   running in the command line: 
-#     - dvc add data(set)
-#     - dvc remote add --default myremote 1g_sGxwElkh3qHKSR86hExgqI4TvfILb4
-#     - dvc push
-#     enter the verification code (Julian)
-# - output for the model should be changed so it supports multiple models
-
 stages:
-  # get_data:
-  #   cmd: poetry run python -m src.get_data
-  #   deps:
-  #     - src/conf.py
-  #     - src/utils.py
-  #     - src/get_data.py
-  #   outs:
-  #     - data/raw/train.tsv
-  #     - data/raw/validation.tsv
   preprocess:
-    cmd: python -m src.preprocess
+    cmd: python -m pipeline.preprocess
     deps:
       - data/raw/raw.tsv
-      - src/conf.py
-      - src/utils.py
-      - src/preprocess.py
+      - src
+      - pipeline/preprocess.py
     outs:
       - data/processed/preprocessed.csv
   gen_schema:
-    cmd: python -m src.gen_schema
+    cmd: python -m pipeline.gen_schema
     deps:
       - data/processed/preprocessed.csv
-      - src/conf.py
-      - src/utils.py
-      - src/gen_schema.py
+      - src
+      - pipeline/gen_schema.py
     outs:
       - output/data/schema.txt
   validate:
-    cmd: python -m src.validate
+    cmd: python -m pipeline.validate
     deps:
       - output/data/schema.txt
       - data/processed/preprocessed.csv
-      - src/conf.py
-      - src/utils.py
-      - src/validate.py
+      - src
+      - pipeline/validate.py
     outs:
       - data/processed/train.joblib
       - data/processed/validation.joblib
   train:
-    cmd: python -m src.train
+    cmd: python -m pipeline.train
     deps:
       - data/processed/train.joblib
       - data/processed/validation.joblib
-      - src/conf.py
-      - src/utils.py
-      - src/preprocess.py
-      - src/model.py
-      - src/train.py
+      - src
+      - pipeline/train.py
     outs:
       - output/models/BagOfWords.joblib
       - output/models/TFIDF.joblib
@@ -65,27 +40,13 @@ stages:
           cache: false
       - output/TFIDF.json:
           cache: false
-      # https://dvc.org/doc/command-reference/metrics
-      # maybe add output/<Emb>.json as metrics output
-  # We want probably generate some sort of report here?
-  # @eval metrics: are computed in the train.py main, but as of yet not exported/stored
-  # metrics:
-  #   - summary.json:
-  #       cache: false
-  # @Julian/Ratish not sure if serve should be a target
-  # serve:
-  #   cmd: poetry run python -m code.serve_model.py
-  #   deps:
-  #   - output
-   # @Julian/Ratish not sure if tests make sense as part of this pipeline
-  # because it has nothing to do w/ the data versioning part and we may want to keep track of test reports...
   test:
-    # cmd: poetry run pytest --junitxml=reports/tests.xml --cov=src --cov-report=xml:reports/coverage.xml
     cmd: pytest --junitxml=reports/tests.xml --cov=src --cov-report=xml:reports/coverage.xml
     deps:
+      - output/models/BagOfWords.joblib
+      - output/models/TFIDF.joblib
       - src
       - tests
-    # Specifying outputs causes DVC to complain about the test reports being git version controlled
     outs:
       - reports/tests.xml:
           cache: false

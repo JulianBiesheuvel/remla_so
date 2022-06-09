@@ -165,7 +165,6 @@ spec:
           # imagePullPolicy: Always
           ports:
             - containerPort: 8080
-              targetPort: 4444
           env:
             - name: PGHOST
               valueFrom:
@@ -205,7 +204,7 @@ spec:
   selector:
     app: drift-monitor
   ports:
-    - port: 4444
+    - port: 8080
       targetPort: 4444
 ---
 apiVersion: monitoring.coreos.com/v1

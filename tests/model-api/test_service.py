@@ -1,7 +1,7 @@
 # pylint: disable=all
 from fastapi.testclient import TestClient
 
-from src.service import app
+from model_api.main import app
 
 client = TestClient(app)
 

@@ -1,3 +1,7 @@
+#
+# Python dependencies for the pipeline, api, scraper and drift-monitor
+#
+
 [tool.poetry]
 name = "code"
 version = "0.1.0"
@@ -7,33 +11,55 @@ authors = ["Johannes Koch <j.koch@student.tudelft.nl>",
 "Andrew Huang <a.s.huang@student.tudelft.nl>",
 "Ratish Thakoersingh <r.k.thakoersingh@student.tudelft.nl>"]
 
+# main dependencies
 [tool.poetry.dependencies]
-python = ">= 3.8,<3.10"
+python = ">=3.8,<=3.9"
 numpy = "^1.22.3"
 sklearn = "^0.0"
 pandas = "^1.4.2"
-pydantic = "^1.9.0"
-fastapi = "^0.78.0"
-uvicorn = "^0.17.6"
 nltk = "^3.7"
 tqdm = "^4.64.0"
-gunicorn = "^20.1.0"
-Scrapy = "^2.6.1"
-scikit-multiflow = "^0.5.3"
-psycopg = {extras = ["binary"], version = "^3.0.14"}
 
-
-[tool.poetry.dev-dependencies]
-pytest = "^5.2"
-mllint = "^0.12.1"
-pylint = "^2.13.9"
-mypy = "^0.950"
-black = "^22.3.0"
-isort = "^5.10.1"
-pytest-cov = "^3.0.0"
-bandit = "^1.7.4"
+[tool.poetry.group.pipeline.dependencies]
 dvc = {extras = ["gdrive"], version = "^2.10.2"}
 tensorflow-data-validation = "^1.8.0"
+
+[tool.poetry.group.model-api.dependencies]
+fastapi = "^0.78.0"
+pydantic = "^1.9.0"
+uvicorn = "^0.17.6"
+
+[tool.poetry.group.so-agent.dependencies]
+APScheduler = "^3.9.1"
+fastapi = "^0.78.0"
+pydantic = "^1.9.0"
+requests = "^2.28.0"
+uvicorn = "^0.17.6"
+
+[tool.poetry.group.scraper.dependencies]
+Scrapy = "^2.6.1"
+prometheus-client = "^0.14.1"
+psycopg = {extras = ["binary"], version = "^3.0.14"}
+
+[tool.poetry.group.drift-monitor.dependencies]
+fastapi = "^0.78.0"
+scikit-multiflow = "^0.5.3"
+psycopg = {extras = ["binary"], version = "^3.0.14"}
+pydantic = "^1.9.0"
+uvicorn = "^0.17.6"
+
+[tool.poetry.dev-dependencies]
+isort = "^5.10.1"
+bandit = "^1.7.4"
+black = "^22.3.0"
+mllint = "^0.12.1"
+mypy = "^0.950"
+pylint = "^2.13.9"
+pytest = "^5.2"
+pytest-cov = "^3.0.0"
+
+[tool.poetry.plugins."poetry.application.plugin"]
+export = "poetry_plugin_export.plugins:ExportApplicationPlugin"
 
 [tool.isort]
 profile = "black"

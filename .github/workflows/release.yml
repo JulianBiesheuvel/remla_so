@@ -16,6 +16,19 @@ jobs:
       - uses: iterative/setup-dvc@v1
         with:
           version: '2.10.2'
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - uses: snok/install-poetry@v1
+        with:
+          version: '1.2.0b1'
+      - run: | # more convenient to do it here instead of having 3 multistage docker builds...
+          pip install poetry-plugin-export
+          poetry export --only main -o requirements.txt --without-hashes
+          poetry export --with model-api -o requirements-model-api.txt --without-hashes
+          poetry export --only scraper -o requirements-scraper.txt --without-hashes
+          poetry export --only drift-monitor -o requirements-drift-monitor.txt --without-hashes
+          poetry export --only so-agent -o requirements-so-agent.txt --without-hashes
 
       - name: Parse version info from tag
         run: |
@@ -42,7 +55,7 @@ jobs:
       - name: Build and push microservice image
         run: |
           IMG=`echo ghcr.io/${{ github.repository }}-service | tr '[:upper:]' '[:lower:]'`
-          docker build \
+          docker build -f Dockerfile.model-api \
             -t ${IMG}:latest \
             -t ${IMG}:${{ env.version_major }}-latest \
             -t ${IMG}:${{ env.version_major }}.${{ env.version_minor }}-latest \
@@ -53,7 +66,7 @@ jobs:
       - name: Build and push drift monitor image
         run: |
           IMG=`echo ghcr.io/${{ github.repository }}-drift-monitor | tr '[:upper:]' '[:lower:]'`
-          docker build -f Dockerfile.monitor \
+          docker build -f Dockerfile.drift-monitor \
             -t ${IMG}:latest \
             -t ${IMG}:${{ env.version_major }}-latest \
             -t ${IMG}:${{ env.version_major }}.${{ env.version_minor }}-latest \
@@ -64,8 +77,18 @@ jobs:
       - name: Build and push scraper image
         run: |
           IMG=`echo ghcr.io/${{ github.repository }}-scraper | tr '[:upper:]' '[:lower:]'`
-          cd scraper
-          docker build \
+          docker build -f Dockerfile.scraper \
+            -t ${IMG}:latest \
+            -t ${IMG}:${{ env.version_major }}-latest \
+            -t ${IMG}:${{ env.version_major }}.${{ env.version_minor }}-latest \
+            -t ${IMG}:${{ env.version }} \
+            .
+          docker push --all-tags $IMG
+
+      - name: Build and push api agent image
+        run: |
+          IMG=`echo ghcr.io/${{ github.repository }}-so-agent | tr '[:upper:]' '[:lower:]'`
+          docker build -f Dockerfile.so-agent \
             -t ${IMG}:latest \
             -t ${IMG}:${{ env.version_major }}-latest \
             -t ${IMG}:${{ env.version_major }}.${{ env.version_minor }}-latest \
