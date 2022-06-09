@@ -23,12 +23,11 @@ jobs:
         with:
           version: '1.2.0b2'
       - run: | # more convenient to do it here instead of having 3 multistage docker builds...
-          poetry --version
-          poetry config --list
-          poetry self show plugins
-      - run: |
-          poetry install # TODO figure out how to make this as minimal as possible?
-          poetry plugin add -vvv poetry-plugin-export=1.0.4
+          # poetry --version
+          # poetry config --list
+          # poetry self show plugins
+          # poetry install # TODO figure out how to make this as minimal as possible?
+          # poetry plugin add -vvv poetry-plugin-export=1.0.4
           poetry export --only main -o requirements.txt --without-hashes
           poetry export --with model-api -o requirements-model-api.txt --without-hashes
           poetry export --only scraper -o requirements-scraper.txt --without-hashes
