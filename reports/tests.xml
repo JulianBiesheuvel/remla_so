@@ -1,6 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite errors="1" failures="0" hostname="DESKTOP-ICL4OEF" name="pytest" skipped="0" tests="1" time="9.017" timestamp="2022-06-10T00:33:28.183720"><testcase classname="" file="tests/test_code.py" name="tests.test_code" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/mnt/d/Documents/remla_so/tests/test_code.py&apos;.
-Hint: make sure your test modules/packages have valid Python names.
-Traceback:
-tests/test_code.py:2: in &lt;module&gt;
-    from lib import __version__
-E   ImportError: cannot import name &apos;__version__&apos; from &apos;lib&apos; (/mnt/d/Documents/remla_so/lib/__init__.py)</error></testcase></testsuite></testsuites>
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite errors="0" failures="0" hostname="DESKTOP-ICL4OEF" name="pytest" skipped="0" tests="2" time="8.355" timestamp="2022-06-10T00:40:04.689124"><testcase classname="tests.test_code" file="tests/test_code.py" line="4" name="test_version" time="0.011"></testcase><testcase classname="tests.model-api.test_service" file="tests/model-api/test_service.py" line="8" name="test_predict" time="0.055"></testcase></testsuite></testsuites>

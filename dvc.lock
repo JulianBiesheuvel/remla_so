@@ -3,28 +3,36 @@ stages:
   test:
     cmd: pytest --junitxml=reports/tests.xml --cov=lib --cov-report=xml:reports/coverage.xml
     deps:
-    - path: lib
-      md5: e0a8915b324767820470c15801d3bc1a.dir
-      size: 36034
-      nfiles: 21
+    - path: lib/conf.py
+      md5: ffb49be58fe9548e1e82017a64091bc6
+      size: 418
+    - path: lib/model.py
+      md5: 1ce7a813c23ca3d3d65207a081c052df
+      size: 6465
+    - path: lib/preprocess.py
+      md5: efdf46803eab92eabb75cf6a16955ee5
+      size: 861
+    - path: lib/utils.py
+      md5: 2757e848d4c800038e2630283f9feee8
+      size: 755
     - path: output/models/BagOfWords.joblib
-      md5: 9d921cf3652d24fb396700983ca5a2c4
+      md5: a3378c9908a9c65abe9627e62d51d048
       size: 4118323
     - path: output/models/TFIDF.joblib
-      md5: daf65ab7196b431678865f244878eda1
+      md5: 17cdb1b32cc776638e7fd9befb7149d9
       size: 18352884
     - path: tests
-      md5: d9a121ed2069900e4955196eff5b7d0c.dir
-      size: 16462
-      nfiles: 19
+      md5: ce0f1a5e5df252db4e0e6b7c933e83e5.dir
+      size: 2478
+      nfiles: 6
     outs:
     - path: reports/coverage.xml
-      md5: 58fa7d8526ef722de5de8f31f0970f0e
-      size: 5720
+      md5: f609cada68038eb5f5beaece36156e36
+      size: 5729
       isexec: true
     - path: reports/tests.xml
-      md5: fd33a3f2256d445ec8aa5eb9c27977c8
-      size: 1018
+      md5: f8d42d587a8a9ebdcf9ac15f17593ef0
+      size: 485
       isexec: true
   preprocess:
     cmd: python -m pipeline.preprocess
@@ -61,28 +69,36 @@ stages:
     - path: data/processed/validation.joblib
       md5: e5e41b0ba045e7a46849342732057ac7
       size: 3432637
-    - path: lib
-      md5: 22242318bdb90301e1c1d0377f043f45.dir
-      size: 18375
-      nfiles: 10
+    - path: lib/conf.py
+      md5: ffb49be58fe9548e1e82017a64091bc6
+      size: 418
+    - path: lib/model.py
+      md5: 1ce7a813c23ca3d3d65207a081c052df
+      size: 6465
+    - path: lib/preprocess.py
+      md5: efdf46803eab92eabb75cf6a16955ee5
+      size: 861
+    - path: lib/utils.py
+      md5: 2757e848d4c800038e2630283f9feee8
+      size: 755
     - path: pipeline/train.py
       md5: af06d1154e92fb08fdb81f9957116ee8
       size: 913
     outs:
     - path: output/BagOfWords.json
-      md5: 2e09af636188398834f4ec356dc18b7b
-      size: 142
+      md5: 7fbf796aa586b9e966584cf8236d1ad8
+      size: 143
       isexec: true
     - path: output/TFIDF.json
-      md5: a49ba9afc810eb81f0495640cadea456
-      size: 141
+      md5: 507ab45841a25a665f64ddb6e91336cf
+      size: 143
       isexec: true
     - path: output/models/BagOfWords.joblib
-      md5: 5baaaadee196eacf15850db629de88e9
+      md5: a3378c9908a9c65abe9627e62d51d048
       size: 4118323
       isexec: true
     - path: output/models/TFIDF.joblib
-      md5: f175d0e75ce5ed5aba49ecd04ca05247
+      md5: 17cdb1b32cc776638e7fd9befb7149d9
       size: 18352884
       isexec: true
   validate:
