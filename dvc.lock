@@ -4,26 +4,26 @@ stages:
     cmd: pytest --junitxml=reports/tests.xml --cov=lib --cov-report=xml:reports/coverage.xml
     deps:
     - path: lib
-      md5: 32d6a24d6173d4b5a5be31e6f4416de9.dir
-      size: 35993
+      md5: e0a8915b324767820470c15801d3bc1a.dir
+      size: 36034
       nfiles: 21
     - path: output/models/BagOfWords.joblib
-      md5: 2106f2cf39593cbb0eabad95d303fb3a
+      md5: 9d921cf3652d24fb396700983ca5a2c4
       size: 4118323
     - path: output/models/TFIDF.joblib
-      md5: b930a9971c0159203d132d6d2d118b10
+      md5: daf65ab7196b431678865f244878eda1
       size: 18352884
     - path: tests
-      md5: 85f2c4c9c772fde5ed11d309261c266a.dir
+      md5: d9a121ed2069900e4955196eff5b7d0c.dir
       size: 16462
       nfiles: 19
     outs:
     - path: reports/coverage.xml
-      md5: ef44744ce492c96fa68b836d4feb906e
+      md5: 58fa7d8526ef722de5de8f31f0970f0e
       size: 5720
       isexec: true
     - path: reports/tests.xml
-      md5: df9471b1bafdac27e63d399d83259986
+      md5: fd33a3f2256d445ec8aa5eb9c27977c8
       size: 1018
       isexec: true
   preprocess:
@@ -54,27 +54,27 @@ stages:
       md5: e5e41b0ba045e7a46849342732057ac7
       size: 3432637
     - path: lib
-      md5: 32d6a24d6173d4b5a5be31e6f4416de9.dir
-      size: 35993
+      md5: e0a8915b324767820470c15801d3bc1a.dir
+      size: 36034
       nfiles: 21
     - path: pipeline/train.py
       md5: af06d1154e92fb08fdb81f9957116ee8
       size: 913
     outs:
     - path: output/BagOfWords.json
-      md5: 2686b6998fe69a7fb731abd703576f83
+      md5: 9315e3e1de470b04053cca27c1e1bc1a
       size: 143
       isexec: true
     - path: output/TFIDF.json
-      md5: 106583eb9dd041dd6d138bbd8bf243ce
-      size: 141
+      md5: 1bd1a4488447f2c8c2a548a77e35424a
+      size: 138
       isexec: true
     - path: output/models/BagOfWords.joblib
-      md5: 2106f2cf39593cbb0eabad95d303fb3a
+      md5: 9d921cf3652d24fb396700983ca5a2c4
       size: 4118323
       isexec: true
     - path: output/models/TFIDF.joblib
-      md5: b930a9971c0159203d132d6d2d118b10
+      md5: daf65ab7196b431678865f244878eda1
       size: 18352884
       isexec: true
   validate:
