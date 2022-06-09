@@ -13,7 +13,7 @@ authors = ["Johannes Koch <j.koch@student.tudelft.nl>",
 
 # main dependencies
 [tool.poetry.dependencies]
-python = ">=3.8,<=3.9"
+python = ">=3.8,<3.10"
 numpy = "^1.22.3"
 sklearn = "^0.0"
 pandas = "^1.4.2"
