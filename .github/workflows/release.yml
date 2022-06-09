@@ -47,6 +47,17 @@ jobs:
             -t ${IMG}:${{ env.version }} \
             .
           docker push --all-tags $IMG
+
+      - name: Build and push drift monitor image
+        run: |
+          IMG=`echo ghcr.io/${{ github.repository }}-drift-monitor | tr '[:upper:]' '[:lower:]'`
+          docker build -f Dockerfile.monitor \
+            -t ${IMG}:latest \
+            -t ${IMG}:${{ env.version_major }}-latest \
+            -t ${IMG}:${{ env.version_major }}.${{ env.version_minor }}-latest \
+            -t ${IMG}:${{ env.version }} \
+            .
+          docker push --all-tags $IMG
       
       - name: Build and push scraper image
         run: |
