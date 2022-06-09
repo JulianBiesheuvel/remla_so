@@ -1,0 +1,38 @@
+name: Release on version tag
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: iterative/setup-dvc@v1
+        with:
+          version: '2.10.2'
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - name: Load cached Poetry installation
+        uses: actions/cache@v2
+        with:
+          path: ~/.local  # the path depends on the OS
+          key: poetry-0  # increment to reset cache
+      - uses: snok/install-poetry@v1
+        with:
+          version: '1.2.0b2'
+      - run: | # more convenient to do it here instead of having 3 multistage docker builds...
+          poetry install --sync --with dev,pipeline,model-api,scraper,so-agent,drift-monitor
+
+      - name: Pull trained models from DVC
+        run: |
+          dvc remote modify myremote gdrive_use_service_account true
+          dvc pull train
+        env:
+          GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
+
+      - name: Parse version info from tag
+        run: pytest
