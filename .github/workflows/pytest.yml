@@ -1,4 +1,4 @@
-name: Release on version tag
+name: pytest
 
 on: push
 
@@ -25,7 +25,7 @@ jobs:
         with:
           version: '1.2.0b2'
       - run: | # more convenient to do it here instead of having 3 multistage docker builds...
-          poetry install --sync --with dev,pipeline,model-api,scraper,so-agent,drift-monitor
+          poetry install --sync --with dev,pipeline,model-api,scraper,so-agent # ,drift-monitor
 
       - name: Pull trained models from DVC
         run: |
@@ -34,5 +34,4 @@ jobs:
         env:
           GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
 
-      - name: Parse version info from tag
-        run: pytest
+      - run: poetry run pytest
