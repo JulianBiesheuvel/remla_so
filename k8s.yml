@@ -161,11 +161,11 @@ spec:
     spec:
       containers:
         - name: drift-monitor
-          image: proksch/showenv
-          # TODO image: ghcr.io/julianbiesheuvel/remla_so-monitor:latest
+          image: ghcr.io/julianbiesheuvel/remla_so-drift-monitor:latest
           # imagePullPolicy: Always
           ports:
-            - containerPort: 4444
+            - containerPort: 8080
+              targetPort: 4444
           env:
             - name: PGHOST
               valueFrom:
