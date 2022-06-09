@@ -2784,7 +2784,7 @@ protobuf = ">=3.13,<4"
 
 [[package]]
 name = "tensorflow-serving-api"
-version = "2.8.2"
+version = "2.9.0"
 description = "TensorFlow Serving Python API."
 category = "dev"
 optional = false
@@ -2793,7 +2793,7 @@ python-versions = "*"
 [package.dependencies]
 grpcio = ">=1.0,<2"
 protobuf = ">=3.6.0"
-tensorflow = ">=2.8.2,<3"
+tensorflow = ">=2.9.0,<3"
 
 [[package]]
 name = "termcolor"
@@ -3139,7 +3139,7 @@ testing = ["coverage (>=5.0.3)", "zope-event", "zope-testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<=3.9"
-content-hash = "ade7e3a1b8cd971a6b5a94485b3037621c0e1e1708522005b2cdebaba5cdaea1"
+content-hash = "b1b7ca7ffbf3928d0c633b3cab7c88e3f03d78b26926616ded65f3374c074c30"
 
 [metadata.files]
 absl-py = [
@@ -5333,7 +5333,7 @@ tensorflow-metadata = [
     {file = "tensorflow_metadata-1.8.0-py3-none-any.whl", hash = "sha256:65c47207efeaff6b514196d2d420dbb7762f0a07336e1798731f90c81541ab11"},
 ]
 tensorflow-serving-api = [
-    {file = "tensorflow_serving_api-2.8.2-py2.py3-none-any.whl", hash = "sha256:e737ecc5459621f82cceb5fb6ce5e8f734c6cc0f1beafa764621352eaf9bb571"},
+    {file = "tensorflow_serving_api-2.9.0-py2.py3-none-any.whl", hash = "sha256:94165b9ed1ae6949e6c46709e86f3761f7041248653ad13d20677b220e6dc676"},
 ]
 termcolor = [
     {file = "termcolor-1.1.0.tar.gz", hash = "sha256:1d6d69ce66211143803fbc56652b41d73b4a400a2891d7bf7a1cdf4c02de613b"},

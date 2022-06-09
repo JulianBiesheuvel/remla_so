@@ -23,7 +23,7 @@ jobs:
         with:
           version: '1.2.0b1'
       - run: | # more convenient to do it here instead of having 3 multistage docker builds...
-          pip install poetry-plugin-export
+          poetry plugin add poetry-plugin-export
           poetry export --only main -o requirements.txt --without-hashes
           poetry export --with model-api -o requirements-model-api.txt --without-hashes
           poetry export --only scraper -o requirements-scraper.txt --without-hashes
