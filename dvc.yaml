@@ -3,7 +3,10 @@ stages:
     cmd: python -m pipeline.preprocess
     deps:
       - data/raw/raw.tsv
-      - lib
+      - lib/conf.py
+      - lib/preprocess.py
+      - lib/utils.py
+      - lib/model.py
       - pipeline/preprocess.py
     outs:
       - data/processed/preprocessed.csv
@@ -11,7 +14,10 @@ stages:
     cmd: python -m pipeline.gen_schema
     deps:
       - data/processed/preprocessed.csv
-      - lib
+      - lib/conf.py
+      - lib/preprocess.py
+      - lib/utils.py
+      - lib/model.py
       - pipeline/gen_schema.py
     outs:
       - output/data/schema.txt
@@ -20,7 +26,10 @@ stages:
     deps:
       - output/data/schema.txt
       - data/processed/preprocessed.csv
-      - lib
+      - lib/conf.py
+      - lib/preprocess.py
+      - lib/utils.py
+      - lib/model.py
       - pipeline/validate.py
     outs:
       - data/processed/train.joblib
@@ -30,7 +39,10 @@ stages:
     deps:
       - data/processed/train.joblib
       - data/processed/validation.joblib
-      - lib
+      - lib/conf.py
+      - lib/preprocess.py
+      - lib/utils.py
+      - lib/model.py
       - pipeline/train.py
     outs:
       - output/models/BagOfWords.joblib
@@ -45,7 +57,10 @@ stages:
     deps:
       - output/models/BagOfWords.joblib
       - output/models/TFIDF.joblib
-      - lib
+      - lib/conf.py
+      - lib/preprocess.py
+      - lib/utils.py
+      - lib/model.py
       - tests
     outs:
       - reports/tests.xml:

@@ -32,10 +32,18 @@ stages:
     - path: data/raw/raw.tsv
       md5: a1d55666d530e7ad6150aafd18b2f909
       size: 9362397
-    - path: lib
-      md5: e0a8915b324767820470c15801d3bc1a.dir
-      size: 36034
-      nfiles: 21
+    - path: lib/conf.py
+      md5: ffb49be58fe9548e1e82017a64091bc6
+      size: 418
+    - path: lib/model.py
+      md5: 1ce7a813c23ca3d3d65207a081c052df
+      size: 6465
+    - path: lib/preprocess.py
+      md5: efdf46803eab92eabb75cf6a16955ee5
+      size: 861
+    - path: lib/utils.py
+      md5: 2757e848d4c800038e2630283f9feee8
+      size: 755
     - path: pipeline/preprocess.py
       md5: 8ee4bdaabd04cf828e5e207a20e9eb86
       size: 1191
@@ -54,27 +62,27 @@ stages:
       md5: e5e41b0ba045e7a46849342732057ac7
       size: 3432637
     - path: lib
-      md5: e0a8915b324767820470c15801d3bc1a.dir
-      size: 36034
-      nfiles: 21
+      md5: 22242318bdb90301e1c1d0377f043f45.dir
+      size: 18375
+      nfiles: 10
     - path: pipeline/train.py
       md5: af06d1154e92fb08fdb81f9957116ee8
       size: 913
     outs:
     - path: output/BagOfWords.json
-      md5: 9315e3e1de470b04053cca27c1e1bc1a
-      size: 143
+      md5: 2e09af636188398834f4ec356dc18b7b
+      size: 142
       isexec: true
     - path: output/TFIDF.json
-      md5: 1bd1a4488447f2c8c2a548a77e35424a
-      size: 138
+      md5: a49ba9afc810eb81f0495640cadea456
+      size: 141
       isexec: true
     - path: output/models/BagOfWords.joblib
-      md5: 9d921cf3652d24fb396700983ca5a2c4
+      md5: 5baaaadee196eacf15850db629de88e9
       size: 4118323
       isexec: true
     - path: output/models/TFIDF.joblib
-      md5: daf65ab7196b431678865f244878eda1
+      md5: f175d0e75ce5ed5aba49ecd04ca05247
       size: 18352884
       isexec: true
   validate:
@@ -83,10 +91,18 @@ stages:
     - path: data/processed/preprocessed.csv
       md5: e6946e2b5b09cf26c6c460ab6df69e99
       size: 8118533
-    - path: lib
-      md5: e0a8915b324767820470c15801d3bc1a.dir
-      size: 36034
-      nfiles: 21
+    - path: lib/conf.py
+      md5: ffb49be58fe9548e1e82017a64091bc6
+      size: 418
+    - path: lib/model.py
+      md5: 1ce7a813c23ca3d3d65207a081c052df
+      size: 6465
+    - path: lib/preprocess.py
+      md5: efdf46803eab92eabb75cf6a16955ee5
+      size: 861
+    - path: lib/utils.py
+      md5: 2757e848d4c800038e2630283f9feee8
+      size: 755
     - path: output/data/schema.txt
       md5: 221546fe759d153800839f0fba62f571
       size: 283
@@ -108,10 +124,18 @@ stages:
     - path: data/processed/preprocessed.csv
       md5: e6946e2b5b09cf26c6c460ab6df69e99
       size: 8118533
-    - path: lib
-      md5: e0a8915b324767820470c15801d3bc1a.dir
-      size: 36034
-      nfiles: 21
+    - path: lib/conf.py
+      md5: ffb49be58fe9548e1e82017a64091bc6
+      size: 418
+    - path: lib/model.py
+      md5: 1ce7a813c23ca3d3d65207a081c052df
+      size: 6465
+    - path: lib/preprocess.py
+      md5: efdf46803eab92eabb75cf6a16955ee5
+      size: 861
+    - path: lib/utils.py
+      md5: 2757e848d4c800038e2630283f9feee8
+      size: 755
     - path: pipeline/gen_schema.py
       md5: 86b25080ad4e5d60995858236c1cb192
       size: 566

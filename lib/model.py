@@ -22,7 +22,7 @@ from sklearn.multiclass import OneVsRestClassifier
 from sklearn.preprocessing import MultiLabelBinarizer
 from typing_extensions import TypedDict
 
-from src import conf, preprocess, utils
+from lib import conf, preprocess, utils
 
 Score = TypedDict(
     "Score",
