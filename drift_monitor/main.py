@@ -63,7 +63,7 @@ app = FastAPI()
 def startup():
     """Starts the monitor tick as background job"""
     scheduler = BackgroundScheduler({"apscheduler.timezone": "UTC"})
-    scheduler.add_job(drift_monitor.tick, "interval", seconds=5)  # minutes=30)
+    scheduler.add_job(drift_monitor.tick, "interval", minutes=5) # TODO minutes=30)
     scheduler.start()
 
 

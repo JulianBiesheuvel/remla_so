@@ -43,26 +43,26 @@ class DriftMonitor:
         ts = int(time() * 1000)  # unix timestamp in [ms]
 
         return """\
-# HELP Number of iterations so far
+# HELP drift_monitor_current_tick Number of iterations so far
 # TYPE drift_monitor_current_tick counter
 drift_monitor_current_tick {current_tick} {ts}
 
-# HELP Number of errors so far
+# HELP drift_monitor_num_errors Number of errors so far
 # TYPE drift_monitor_num_errors counter
 drift_monitor_num_errors {num_errors} {ts}
 """.format(
             **prom_metrics, ts=ts
         ) + "\n".join(
             """
-# HELP Last batch {k} score
+# HELP drift_monitor_{k} Last batch {k} score
 # TYPE drift_monitor_{k} gauge
 drift_monitor_{k} {v} {ts}
 
-# HELP {k} drift detected
+# HELP drift_monitor_drift_detected_{k} {k} drift detected
 # TYPE drift_monitor_drift_detected_{k} gauge
 drift_monitor_drift_detected_{k} {drift} {ts}
 
-# HELP 1 if {k} is in the drift warning zone
+# HELP drift_monitor_drift_warning_{k} 1 if {k} is in the drift warning zone
 # TYPE drift_monitor_drift_warning_{k} gauge
 drift_monitor_drift_warning_{k} {warn} {ts}""".format(
                 ts=ts,
