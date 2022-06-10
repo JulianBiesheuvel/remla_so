@@ -205,7 +205,7 @@ spec:
     app: drift-monitor
   ports:
     - port: 8080
-      targetPort: 4444
+      targetPort: 8080
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
@@ -219,7 +219,7 @@ spec:
     matchLabels:
       app: drift-monitor-svc
   endpoints:
-  - targetPort: 4444
+  - targetPort: 8080
     path: "/metrics"
     interval: 30s
 ---
@@ -285,7 +285,7 @@ spec:
     app: so-agent
   ports:
     - port: 8080
-      targetPort: 7000
+      targetPort: 8080
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
@@ -299,7 +299,7 @@ spec:
     matchLabels:
       app: so-agent-svc
   endpoints:
-  - targetPort: 7000
+  - targetPort: 8080
     path: "/metrics"
     interval: 30s
 ---

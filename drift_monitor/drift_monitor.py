@@ -44,11 +44,11 @@ class DriftMonitor:
 
         return """\
 # HELP Number of iterations so far
-# TYPE drift_monitor_current_tick
+# TYPE drift_monitor_current_tick counter
 drift_monitor_current_tick {current_tick} {ts}
 
 # HELP Number of errors so far
-# TYPE drift_monitor_num_errors
+# TYPE drift_monitor_num_errors counter
 drift_monitor_num_errors {num_errors} {ts}
 """.format(
             **prom_metrics, ts=ts
