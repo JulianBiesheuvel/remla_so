@@ -90,6 +90,52 @@ Ideally we would use [path dependencies](https://python-poetry.org/docs/dependen
 Multilabel classification on Stack Overflow tags
 Predict tags for posts from StackOverflow with multilabel classification approach.
 
+## Setup
+
+### Development
+
+For this project, Python (>=3.8,<3.10) and poetry (>=1.2.0b2) are needed.
+
+#### Installation
+
+```bash
+# to install all dependencies
+poetry install --sync --with dev,pipeline,model-api,scraper,so-agent,main --without=drift-monitor
+poetry install --sync --with drift-monitor
+```
+
+#### Usage
+
+```bash
+poetry shell
+
+# usage examples
+# run DVC pipeline
+dvc pull data
+dvc repro
+dvc push
+# run project linters
+mllint
+# run tests
+pytest
+# start model api
+uvicorn model_api.main:app
+```
+
+### Deploy
+
+TODO prerequisites...
+
+```bash
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo update
+helm install promstack prometheus-community/kube-prometheus-stack
+kubectl apply -f k8s.yml # defines secrets pg depends on
+helm install postgres -f postgres-values.yml bitnami/postgresql
+```
+
+
 ## Dataset
 - Dataset of post titles from StackOverflow
 
