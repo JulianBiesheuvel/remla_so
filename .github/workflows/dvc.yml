@@ -24,8 +24,9 @@ jobs:
       - uses: snok/install-poetry@v1
         with:
           version: '1.2.0b2'
-      - run: | # more convenient to do it here instead of having 3 multistage docker builds...
-          poetry install --sync --with dev,pipeline,model-api,scraper,so-agent # ,drift-monitor
+      - run: | # scikit-multiflow needs this to be 2 installs
+          poetry install --sync --with dev,pipeline,model-api,scraper,so-agent
+          poetry install --sync --with drift-monitor
 
       - name: DVC
         run: |
