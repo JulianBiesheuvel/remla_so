@@ -47,7 +47,6 @@ def load_model_metrics():
     """Loads the initial model metrics"""
     import json  # pylint: ignore
     import os  # pylint: ignore
-
     with open(os.path.join("output", "TFIDF.json"), encoding="utf8") as f:
         metrics = json.load(f)
     return { k:v for k,v in metrics.items() if k in INCLUDE_SCORES }

@@ -26,7 +26,7 @@ jobs:
           version: '1.2.0b2'
       - run: | # scikit-multiflow needs this to be 2 installs
           poetry install --sync --with dev,pipeline,model-api,scraper,so-agent,main --without=drift-monitor
-          poetry install --sync --with drift-monitor
+          # poetry install --sync --with drift-monitor
 
       - name: Pull trained models from DVC
         run: |

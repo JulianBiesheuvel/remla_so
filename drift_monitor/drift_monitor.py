@@ -71,5 +71,5 @@ drift_monitor_drift_warning_{k} {warn} {ts}""".format(
                 drift=int(self.detectors[k].detected_change()),
                 warn=int(self.detectors[k].detected_warning_zone()),
             )
-            for k, v in self.last_scores.items()
+            for k, v in self.last_scores.items() if k in self.metrics
         )
