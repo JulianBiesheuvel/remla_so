@@ -16,7 +16,7 @@ metrics = {
     "status": 200,
     "num_requests": 0,
     "num_successful": 0,
-    "quota_remaining": 300,
+    "quota_remaining": 0,
 }
 
 
@@ -62,8 +62,8 @@ def startup():
     """Starts the background job"""
     scheduler = BackgroundScheduler({"apscheduler.timezone": "UTC"})
     scheduler.add_job(
-        query_so, "interval", seconds=9
-    )  # every 9s to stay below 10k/day limit
+        query_so, "interval", seconds=288 # 1day / 288s = 300requests
+    )
     scheduler.start()
 
 
