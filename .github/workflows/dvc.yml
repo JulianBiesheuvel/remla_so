@@ -29,10 +29,9 @@ jobs:
 
       - name: DVC
         run: |
-          poetry shell
-          dvc remote modify myremote gdrive_use_service_account true
-          dvc pull data
-          dvc repro
-          dvc push
+          poetry run dvc remote modify myremote gdrive_use_service_account true
+          poetry run dvc pull data
+          poetry run dvc repro
+          poetry run dvc push
         env:
           GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}

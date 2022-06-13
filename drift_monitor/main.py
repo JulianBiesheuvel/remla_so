@@ -34,11 +34,13 @@ def get_new_data(batch_size: int = 20000):
 
 m = Model.load("TFIDF")
 
+# some of the others don't behave nicely
+INCLUDE_SCORES = ["accuracy"]
 
 def calculate_scores():
     """Gets data and calculates the model scores"""
     X, y = get_new_data()
-    return m.eval(X, y)
+    return m.eval(X, y, include_scores=INCLUDE_SCORES)
 
 
 def load_model_metrics():
@@ -47,7 +49,8 @@ def load_model_metrics():
     import os  # pylint: ignore
 
     with open(os.path.join("output", "TFIDF.json"), encoding="utf8") as f:
-        return json.load(f)
+        metrics = json.load(f)
+    return { k:v for k,v in metrics.items() if k in INCLUDE_SCORES }
 
 
 drift_monitor = DriftMonitor(
