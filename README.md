@@ -2,6 +2,7 @@
 
 [![Release on version tag](https://github.com/JulianBiesheuvel/remla_so/actions/workflows/release.yml/badge.svg)](https://github.com/JulianBiesheuvel/remla_so/actions/workflows/release.yml)
 [![pytest](https://github.com/JulianBiesheuvel/remla_so/actions/workflows/pytest.yml/badge.svg)](https://github.com/JulianBiesheuvel/remla_so/actions/workflows/pytest.yml)
+[![DVC Pipeline](https://github.com/JulianBiesheuvel/remla_so/actions/workflows/dvc.yml/badge.svg)](https://github.com/JulianBiesheuvel/remla_so/actions/workflows/dvc.yml)
 
 
 In this repository we performed release engineering on a [StackOverflow tag prediction project created by @partoftheorigin](https://github.com/partoftheorigin/multilabel-classification-stack-overflow). In addition we extended the project with drift detection and automated data collection.
