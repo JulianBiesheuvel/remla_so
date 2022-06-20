@@ -2,6 +2,9 @@
 Drift monitor.
 """
 
+# pylint: skip-file
+# mypy: ignore-errors
+
 from time import time
 from typing import List
 
@@ -27,7 +30,7 @@ class DriftMonitor:
         self.detectors = {m: detector() for m in self.metrics}
         self.calculate_scores = calculate_scores
 
-    def tick(self):
+    def tick(self) -> None:
         """Detects prediction drift"""
         prom_metrics["current_tick"] += 1
         try:
@@ -38,7 +41,7 @@ class DriftMonitor:
         except:  # pylint: ignore
             prom_metrics["num_errors"] += 1
 
-    def prometheus_metrics(self):
+    def prometheus_metrics(self) -> str:
         """Prometheus integration"""
         ts = int(time() * 1000)  # unix timestamp in [ms]
 
@@ -71,5 +74,6 @@ drift_monitor_drift_warning_{k} {warn} {ts}""".format(
                 drift=int(self.detectors[k].detected_change()),
                 warn=int(self.detectors[k].detected_warning_zone()),
             )
-            for k, v in self.last_scores.items() if k in self.metrics
+            for k, v in self.last_scores.items()
+            if k in self.metrics
         )

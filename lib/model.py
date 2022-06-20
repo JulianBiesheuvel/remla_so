@@ -1,6 +1,7 @@
 """
 The embeddings and model for the ml task.
 """
+# pylint: skip-file
 
 from abc import ABC, abstractmethod
 from functools import reduce
@@ -167,16 +168,31 @@ class Model:
         y_pred = self._predict(X)
         return cast(List[List[str]], self.mlb.inverse_transform(y_pred))  # type: ignore
 
-    def eval(self, X: List[str], y: List[List[str]], include_scores: List[str] = ["all"]) -> Score:
+    def eval(
+        self,
+        X: List[str],
+        y: List[List[str]],
+        include_scores: List[str] = ["all"],
+    ) -> Score:
         """Evaluates the model performance given a validation set."""
         y_pred = self._predict(X)
         y_true = self.mlb.transform(y)  # type: ignore
         return {
-            "accuracy": accuracy_score(y_true, y_pred) if "accuracy" in include_scores or "all" in include_scores else -1,
-            "f1": f1_score(y_true, y_pred, average="weighted")if "f1" in include_scores or "all" in include_scores else -1,
-            "ap": average_precision_score(y_true, y_pred, average="macro")if "ap" in include_scores or "all" in include_scores else -1,
-            "recall": recall_score(y_true, y_pred, labels=None, average="macro")if "recall" in include_scores or "all" in include_scores else -1,
-            "roc": roc_auc(y_true, y_pred, multi_class="ovo") if "roc" in include_scores or "all" in include_scores else -1,
+            "accuracy": accuracy_score(y_true, y_pred)
+            if "accuracy" in include_scores or "all" in include_scores
+            else -1,
+            "f1": f1_score(y_true, y_pred, average="weighted")
+            if "f1" in include_scores or "all" in include_scores
+            else -1,
+            "ap": average_precision_score(y_true, y_pred, average="macro")
+            if "ap" in include_scores or "all" in include_scores
+            else -1,
+            "recall": recall_score(y_true, y_pred, labels=None, average="macro")
+            if "recall" in include_scores or "all" in include_scores
+            else -1,
+            "roc": roc_auc(y_true, y_pred, multi_class="ovo")
+            if "roc" in include_scores or "all" in include_scores
+            else -1,
         }
 
     @staticmethod

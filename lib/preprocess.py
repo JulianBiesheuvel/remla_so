@@ -3,13 +3,13 @@ Data preprocessing for the model.
 """
 
 import re
+
 import nltk
 
 nltk.download("stopwords")
 
 import numpy as np
 from nltk.corpus import stopwords
-
 
 REPLACE_BY_SPACE_RE = re.compile(r"[/(){}\[\]\|@,;]")
 BAD_SYMBOLS_RE = re.compile("[^0-9a-z #+_]")

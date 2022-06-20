@@ -3,21 +3,23 @@ Provides a REST API for the model.
 """
 
 from ast import literal_eval
+from typing import Dict, List, Tuple
 
 import psycopg
 from apscheduler.schedulers.background import BackgroundScheduler
-
-# pylint: disable=E0611,R0903
 from fastapi import FastAPI
 from fastapi.responses import PlainTextResponse
 from skmultiflow.drift_detection.adwin import ADWIN
 from starlette.responses import RedirectResponse
 
 from drift_monitor.drift_monitor import DriftMonitor
-from lib.model import Model
+from lib.model import Model, Score
+
+# pylint: disable=E0611,R0903 skip-file
+# mypy: ignore-errors
 
 
-def get_new_data(batch_size: int = 20000):
+def get_new_data(batch_size: int = 20000) -> Tuple[List[str], List[List[str]]]:
     """Retrieves new testing data"""
     X, y = [], []
     with psycopg.connect() as conn:  # pylint: ignore
@@ -37,19 +39,21 @@ m = Model.load("TFIDF")
 # some of the others don't behave nicely
 INCLUDE_SCORES = ["accuracy"]
 
-def calculate_scores():
+
+def calculate_scores() -> Score:
     """Gets data and calculates the model scores"""
     X, y = get_new_data()
     return m.eval(X, y, include_scores=INCLUDE_SCORES)
 
 
-def load_model_metrics():
+def load_model_metrics() -> Dict[str, float]:
     """Loads the initial model metrics"""
     import json  # pylint: ignore
     import os  # pylint: ignore
+
     with open(os.path.join("output", "TFIDF.json"), encoding="utf8") as f:
         metrics = json.load(f)
-    return { k:v for k,v in metrics.items() if k in INCLUDE_SCORES }
+    return {k: v for k, v in metrics.items() if k in INCLUDE_SCORES}
 
 
 drift_monitor = DriftMonitor(
@@ -62,10 +66,10 @@ app = FastAPI()
 
 
 @app.on_event("startup")
-def startup():
+def startup() -> None:
     """Starts the monitor tick as background job"""
     scheduler = BackgroundScheduler({"apscheduler.timezone": "UTC"})
-    scheduler.add_job(drift_monitor.tick, "interval", minutes=5) # TODO minutes=30)
+    scheduler.add_job(drift_monitor.tick, "interval", minutes=5)
     scheduler.start()
 
 

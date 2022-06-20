@@ -1,6 +1,6 @@
-name: DVC
+name: Runs the DVC Pipeline
 
-on: workflow_dispatch # TODO on push if it works - then the correct outputs for main always exist
+on: workflow_dispatch
 
 jobs:
   build:
@@ -30,7 +30,7 @@ jobs:
       - name: DVC
         run: |
           poetry run dvc remote modify myremote gdrive_use_service_account true
-          poetry run dvc pull data
+          poetry run dvc pull
           poetry run dvc repro
           poetry run dvc push
         env:

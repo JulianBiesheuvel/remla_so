@@ -1,6 +1,9 @@
 """
 Periodically queries the SO api for new data and provides prometheus metrics.
 """
+# pylint: skip-file
+# mypy: ignore-errors
+
 from datetime import datetime
 from time import time
 
@@ -20,7 +23,7 @@ metrics = {
 }
 
 
-def query_so():
+def query_so() -> None:
     """Retrieves new questions using the stackoverflow api"""
     metrics["num_requests"] += 1
     # get stackoverflow data
@@ -58,12 +61,10 @@ app = FastAPI()
 
 
 @app.on_event("startup")
-def startup():
+def startup() -> None:
     """Starts the background job"""
     scheduler = BackgroundScheduler({"apscheduler.timezone": "UTC"})
-    scheduler.add_job(
-        query_so, "interval", seconds=288 # 1day / 288s = 300requests
-    )
+    scheduler.add_job(query_so, "interval", seconds=288)  # 1day / 288s = 300requests
     scheduler.start()
 
 

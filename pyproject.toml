@@ -69,6 +69,10 @@ profile = "black"
 [tool.bandit]
 exclude_dirs = ["tests"]
 
+# rewriting the git history did not seem to work
+[tool.mllint.git]
+maxFileSize = 100000000
+
 [tool.mllint.testing]
 report = "reports/tests.xml"
 
@@ -84,7 +88,7 @@ other = 9
 
 
 [tool.pylint.'MESSAGES CONTROL']
-disable = ["C0103", "C0413", "C0301"]
+disable = ["C0103", "C0413", "C0301", "W0102"]
 
 [tool.mypy]
 ignore_missing_imports = "True"
