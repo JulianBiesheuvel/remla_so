@@ -1,7 +1,7 @@
 import os
 import tempfile
 
-from src import utils
+from lib import utils
 
 
 # pylint: disable=all

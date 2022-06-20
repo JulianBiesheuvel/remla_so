@@ -1,5 +1,5 @@
 # pylint: disable=all
-from src.preprocess import preprocess
+from lib.preprocess import preprocess
 
 
 def test_text_prepare() -> None:

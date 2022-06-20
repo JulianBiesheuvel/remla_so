@@ -1,5 +1,5 @@
 # pylint: disable=all
-from src.model import TFIDF, BagOfWords
+from lib.model import TFIDF, BagOfWords
 
 
 def test_my_bag_of_words() -> None:
